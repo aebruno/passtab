@@ -1,0 +1,33 @@
+<assembly>
+  <id>exe</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory></outputDirectory>
+      <outputFileNameMapping></outputFileNameMapping>
+      <unpack>true</unpack>
+      <scope>runtime</scope>
+      <includes>
+        <include>cern.colt:colt</include>
+        <include>commons-math:commons-math</include>
+        <include>org.apache.pdfbox:pdfbox</include>
+        <include>org.apache.pdfbox:fontbox</include>
+        <include>com.google.code.gson:gson</include>
+        <include>commons-lang:commons-lang</include>
+        <include>commons-cli:commons-cli</include>
+        <include>commons-io:commons-io</include>
+        <include>commons-logging:commons-logging</include>
+        <include>log4j:log4j</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+  <fileSets>
+    <fileSet>
+      <directory>target/classes</directory>
+      <outputDirectory></outputDirectory>
+    </fileSet>
+  </fileSets>
+</assembly>
