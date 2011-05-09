@@ -19,4 +19,14 @@ public class Alphabet {
         "~","`","!","@","#","$","%","^","&","*","(",")","-","_","=","+","{","}",";",":","\"","'","?","/",">","<",
         ",","."
     };
+
+    public static int getIndex(String symbol, String[] alphabet) {
+        for(int i = 0; i < alphabet.length; i++) {
+            if(symbol.equals(alphabet[i])) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }
