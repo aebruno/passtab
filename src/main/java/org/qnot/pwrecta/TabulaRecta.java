@@ -1,38 +1,76 @@
 package org.qnot.pwrecta;
 
-import java.security.Security;
-import java.security.Provider;
 import org.apache.commons.math.random.RandomDataImpl;
+
+import com.google.gson.Gson;
 
 public class TabulaRecta {
 
-    public static String[][] generate(String[] header, String[] alphabet) throws Exception {
-        String[][] tabulaRecta = new String[header.length+1][header.length+1];
+    private String[][] tabulaRecta;
+    private Alphabet headerAlphabet;
+    private Alphabet dataAlphabet;
 
-        RandomDataImpl rand = new RandomDataImpl();
-        rand.setSecureAlgorithm("SHA1PRNG","SUN"); 
-        //rand.reSeedSecure();
-
-        tabulaRecta[0][0] = " ";
-
-        for(int i = 1; i <= header.length; i++) {
-            tabulaRecta[0][i] = header[i-1];
-        }
-
-        for(int i = 0; i < header.length; i++) {
-            tabulaRecta[i+1] = TabulaRecta.generateRow(i, rand, header, alphabet);
-        }
-
-        return tabulaRecta;
+    public TabulaRecta(Alphabet headerAlphabet, Alphabet dataAlphabet) {
+        this.headerAlphabet = headerAlphabet;
+        this.dataAlphabet = dataAlphabet;
+        this.tabulaRecta = new String[headerAlphabet.size()][headerAlphabet.size()];
+    }
+    
+    public static TabulaRecta fromJSON(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, TabulaRecta.class);
     }
 
-    private static String[] generateRow(int rowIndex, RandomDataImpl rand, String[] header, String[] alphabet) {
-        String[] row = new String[header.length+1];
-        row[0] = header[rowIndex];
+    public String get(int row, int col) {
+        return this.tabulaRecta[row][col];
+    }
 
-        for(int i = 1; i <= header.length; i++) {
-            int index = rand.nextSecureInt(0,(alphabet.length-1));
-            row[i] = alphabet[index];
+    public Alphabet getHeader() {
+        return this.headerAlphabet;
+    }
+
+    public int rows() {
+        return this.tabulaRecta.length;
+    }
+
+    public int cols() {
+        return this.tabulaRecta.length;
+    }
+
+    public String[][] asStringArray() {
+        String[][] array = new String[this.rows()+1][this.cols()+1];
+        array[0][0] = " ";
+        
+        for (int i = 0; i < this.cols(); i++) {
+            array[0][i+1] = this.headerAlphabet.get(i);
+        }
+        
+        for(int i = 0; i < this.rows(); i++) {
+            array[i+1][0] = this.headerAlphabet.get(i);
+            for(int j = 0; j < this.cols(); j++) {
+                array[i+1][j+1] = this.get(i, j);
+            }
+        }
+        
+        return array;
+    }
+
+    public void generate() throws Exception {
+        RandomDataImpl rand = new RandomDataImpl();
+        rand.setSecureAlgorithm("SHA1PRNG", "SUN");
+        // rand.reSeedSecure();
+
+        for (int i = 0; i < this.headerAlphabet.size(); i++) {
+            tabulaRecta[i] = generateRow(i, rand);
+        }
+    }
+
+    private String[] generateRow(int rowIndex, RandomDataImpl rand) {
+        String[] row = new String[this.headerAlphabet.size()];
+
+        for (int i = 0; i < this.headerAlphabet.size(); i++) {
+            int index = rand.nextSecureInt(0, (this.dataAlphabet.size() - 1));
+            row[i] = this.dataAlphabet.get(index);
         }
 
         return row;

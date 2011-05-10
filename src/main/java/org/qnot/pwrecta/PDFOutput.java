@@ -2,13 +2,15 @@ package org.qnot.pwrecta;
 
 import java.awt.Color;
 import java.io.IOException;
+import java.io.OutputStream;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
-public class PDFOutput {
+public class PDFOutput implements OutputFormat {
     private static int X_START = 140;
     private static int Y_START = 570;
 
@@ -22,7 +24,7 @@ public class PDFOutput {
     private static PDFont DEFAULT_FONT = PDType1Font.COURIER;
     private static PDFont BOLD_FONT = PDType1Font.COURIER_BOLD;
 
-    public static void output(String file, String[][] tabulaRecta) throws IOException {
+    public void output(OutputStream out, TabulaRecta tabulaRecta) throws IOException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
         page.setMediaBox(PDPage.PAGE_SIZE_A4);
@@ -37,11 +39,13 @@ public class PDFOutput {
         int x = PDFOutput.X_START;
         int y = PDFOutput.Y_START;
 
-        for(int i = 0; i < tabulaRecta.length; i++) {
-            for(int j = 0; j < tabulaRecta[0].length; j++) {
+        String[][] array = tabulaRecta.asStringArray();
+        
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[0].length; j++) {
                 if((i % 2) != 0) {
                     contentStream.setNonStrokingColor(PDFOutput.BOX_COLOR);
-                    contentStream.fillRect(x-2, y-2, PDFOutput.BOX_WIDTH, PDFOutput.BOX_WIDTH);
+                    contentStream.fillRect(x-2, y-4, PDFOutput.BOX_WIDTH, PDFOutput.BOX_WIDTH);
                     contentStream.setNonStrokingColor(PDFOutput.FONT_COLOR);
                 }
                 if((j % 2) != 0) {
@@ -52,7 +56,7 @@ public class PDFOutput {
 
                 contentStream.beginText();
                 contentStream.moveTextPositionByAmount(x,y);
-                contentStream.drawString(tabulaRecta[i][j]);
+                contentStream.drawString(array[i][j]);
                 contentStream.endText();
                 x += PDFOutput.X_SPACE;
             }
@@ -65,10 +69,10 @@ public class PDFOutput {
         contentStream.close();
 
         try {
-            document.save(file);
+            document.save(out);
             document.close();
         } catch(Exception e) {
-            throw new IOException("Failed to create PDF: "+file, e);
+            throw new IOException("Failed to create PDF: ", e);
         }
     }
 }

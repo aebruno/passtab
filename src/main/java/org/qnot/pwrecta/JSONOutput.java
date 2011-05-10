@@ -1,27 +1,16 @@
 package org.qnot.pwrecta;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
+
+import org.apache.commons.io.IOUtils;
+
 import com.google.gson.Gson;
-import org.apache.commons.io.FileUtils;
 
-public class JSONOutput {
+public class JSONOutput implements OutputFormat {
 
-    public static void output(File outfile, String[][] tabulaRecta) {
+    public void output(OutputStream out, TabulaRecta tabulaRecta) throws IOException {
         Gson gson = new Gson();
-        String json = gson.toJson(tabulaRecta);
-
-        if(outfile == null) {
-            System.out.print(json);
-            return;
-        }
-
-        try {
-            FileUtils.writeStringToFile(outfile, 
-                                        gson.toJson(tabulaRecta),
-                                        "UTF-8");
-        } catch(IOException e) {
-            System.err.println("Failed to write JSON output: "+e.getMessage());
-        }
+        IOUtils.write(gson.toJson(tabulaRecta), out, "UTF-8");
     }
 }

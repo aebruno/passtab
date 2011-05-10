@@ -1,31 +1,21 @@
 package org.qnot.pwrecta;
 
-import java.io.File;
 import java.io.IOException;
-import org.apache.commons.io.FileUtils;
+import java.io.OutputStream;
 
-public class AsciiOutput {
+import org.apache.commons.io.IOUtils;
 
-    public static void output(File outfile, String[][] tabulaRecta) {
-        String output = "";
-        for(int i = 0; i < tabulaRecta.length; i++) {
-            for(int j = 0; j < tabulaRecta[0].length; j++) {
-                output += tabulaRecta[i][j]+" ";
+public class AsciiOutput implements OutputFormat {
+
+    public void output(OutputStream out, TabulaRecta tabulaRecta) throws IOException {
+        
+        String[][] array = tabulaRecta.asStringArray();
+        
+        for(int i = 0; i < array.length; i++) {
+            for(int j = 0; j < array[0].length; j++) {
+                IOUtils.write(array[i][j]+" ", out, "UTF-8");
             }
-            output += "\n";
-        }
-
-        if(outfile == null) {
-            System.out.print(output);
-            return;
-        }
-
-        try {
-            FileUtils.writeStringToFile(outfile, 
-                                        output,
-                                        "UTF-8");
-        } catch(IOException e) {
-            System.err.println("Failed to write Ascii output: "+e.getMessage());
+            IOUtils.write("\n", out, "UTF-8");
         }
     }
 }
