@@ -2,6 +2,7 @@ package org.qnot.pwrecta;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 
 import org.apache.commons.cli.CommandLine;
@@ -19,9 +20,10 @@ import com.google.gson.Gson;
 
 public class Main {
     private static Log logger = LogFactory.getLog(Main.class);
+    private static Options options;
 
     public static void main(String[] args) throws Exception {
-        Options options = Main.buildOptions();
+        Main.buildOptions();
 
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = null;
@@ -35,47 +37,52 @@ public class Main {
             Main.printHelpAndExit(options);
         }
 
-        // Retrieve password
-
-        if (cmd.hasOption("p")) {
-            File jsonFile = null;
-
-            String inFile = cmd.getOptionValue("i");
-            if (inFile != null && inFile.length() > 0) {
-                jsonFile = new File(inFile);
-            } else {
-                jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
-            }
-
-            String json = FileUtils.readFileToString(jsonFile);
-            Gson gson = new Gson();
-            TabulaRecta tabulaRecta = gson.fromJson(json, TabulaRecta.class);
-
-            String coords = cmd.getOptionValue("p");
-            if (coords == null || coords.length() == 0) {
-                Main.printHelpAndExit(options,
-                        "Please provide a row:column (ex. C:F)");
-            }
-
-            String[] parts = coords.split(":");
-            if (parts == null || parts.length != 2) {
-                Main.printHelpAndExit(options,
-                        "Invalid value. Please provide a row:column (ex. C:F)");
-            }
-
-            int row = tabulaRecta.getHeader().getIndex(parts[0]);
-            int col = tabulaRecta.getHeader().getIndex(parts[1]);
-            if (row == -1 || col == -1) {
-                Main.printHelpAndExit(options,
-                                "Symbol not found. Please provide a valid row:column (ex. C:F)");
-            }
-
-            System.out.println(tabulaRecta.get(row, col));
-            System.exit(0);
+        if (cmd.hasOption("g")) {
+            Main.fetchPassword(cmd);
+        } else {
+            Main.generate(cmd);
         }
 
-        // Otherwise we generate
+        System.exit(0);
+    }
+    
+    public static void fetchPassword(CommandLine cmd) throws IOException {
+        File jsonFile = null;
 
+        String inFile = cmd.getOptionValue("i");
+        if (inFile != null && inFile.length() > 0) {
+            jsonFile = new File(inFile);
+        } else {
+            jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
+        }
+
+        String json = FileUtils.readFileToString(jsonFile);
+        Gson gson = new Gson();
+        TabulaRecta tabulaRecta = gson.fromJson(json, TabulaRecta.class);
+
+        String coords = cmd.getOptionValue("g");
+        if (coords == null || coords.length() == 0) {
+            Main.printHelpAndExit(options,
+                    "Please provide a row:column (ex. C:F)");
+        }
+
+        String[] parts = coords.split(":");
+        if (parts == null || parts.length != 2) {
+            Main.printHelpAndExit(options,
+                    "Invalid value. Please provide a row:column (ex. C:F)");
+        }
+
+        int row = tabulaRecta.getHeader().getIndex(parts[0]);
+        int col = tabulaRecta.getHeader().getIndex(parts[1]);
+        if (row == -1 || col == -1) {
+            Main.printHelpAndExit(options,
+                            "Symbol not found. Please provide a valid row:column (ex. C:F)");
+        }
+
+        System.out.println(tabulaRecta.get(row, col));     
+    }
+    
+    public static void generate(CommandLine cmd) throws IOException {
         TabulaRecta tabulaRecta = new TabulaRecta(Alphabet.ALPHA_UPPER_NUM,
                 Alphabet.ALPHA_NUM_SYMBOL);
         tabulaRecta.generate();
@@ -119,13 +126,11 @@ public class Main {
 
             outputFormat.output(outputStream, tabulaRecta);
         }
-
-        System.exit(0);
     }
   
     @SuppressWarnings("static-access")
-    public static Options buildOptions() {
-        Options options = new Options();
+    public static void buildOptions() {
+        Main.options = new Options();
         options.addOption(
             OptionBuilder.withLongOpt("output")
                          .withDescription("output file")
@@ -155,10 +160,16 @@ public class Main {
                          .create("f")
         );
         options.addOption(
-            OptionBuilder.withLongOpt("password")
+            OptionBuilder.withLongOpt("getpass")
                          .withDescription("[row:column] - get the password at row:column (ex. B:W)")
                          .hasArg()
-                         .create("p")
+                         .create("g")
+        );
+        options.addOption(
+                OptionBuilder.withLongOpt("print")
+                             .withDescription("print existing pwrecta database")
+                             .hasArg()
+                             .create("p")
         );
         options.addOption(
             OptionBuilder.withLongOpt("input")
@@ -166,8 +177,6 @@ public class Main {
                          .hasArg()
                          .create("i")
         );
-        
-        return options;
     }
 
     public static void printHelpAndExit(Options options, String message) {
