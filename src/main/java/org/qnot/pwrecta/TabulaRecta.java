@@ -84,13 +84,13 @@ public class TabulaRecta {
                     row--;
                     col--;
                 case NW:
-                    row++;
+                    row--;
                     col++;
                 case SE:
                     row++;
                     col--;
                 case SW:
-                    row--;
+                    row++;
                     col++;
                 }
 
