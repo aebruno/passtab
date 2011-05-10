@@ -20,7 +20,6 @@
         <include>commons-cli:commons-cli</include>
         <include>commons-io:commons-io</include>
         <include>commons-logging:commons-logging</include>
-        <include>log4j:log4j</include>
       </includes>
     </dependencySet>
   </dependencySets>
