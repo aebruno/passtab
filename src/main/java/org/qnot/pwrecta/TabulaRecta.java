@@ -1,5 +1,8 @@
 package org.qnot.pwrecta;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+
 import org.apache.commons.math.random.RandomDataImpl;
 
 import com.google.gson.Gson;
@@ -55,9 +58,16 @@ public class TabulaRecta {
         return array;
     }
 
-    public void generate() throws Exception {
+    public void generate() {
         RandomDataImpl rand = new RandomDataImpl();
-        rand.setSecureAlgorithm("SHA1PRNG", "SUN");
+        try {
+            rand.setSecureAlgorithm("SHA1PRNG", "SUN");
+        } catch(NoSuchProviderException e) {
+            throw new RuntimeException("Failed to set secure provider", e);
+        } catch(NoSuchAlgorithmException e) {
+            throw new RuntimeException("Failed to set secure algorithm", e);
+        }
+        
         // rand.reSeedSecure();
 
         for (int i = 0; i < this.headerAlphabet.size(); i++) {
