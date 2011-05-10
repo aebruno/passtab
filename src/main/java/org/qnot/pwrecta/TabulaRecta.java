@@ -68,8 +68,15 @@ public class TabulaRecta {
         for (SequenceItem i : sequence.getItemList()) {
 
             Direction dir = i.getDirection();
+            int len = i.getLength();
+            boolean skip = false;
+            
+            if(len < 0) {
+                skip = true;
+                len = Math.abs(len);
+            }
 
-            for (int x = 0; x < i.getLength(); x++) {
+            for (int x = 0; x < len; x++) {
                 switch (dir) {
                 case N:
                     row--;
@@ -101,7 +108,7 @@ public class TabulaRecta {
                 if (col >= this.cols())
                     col = this.cols() - 1;
 
-                pass += this.get(row, col);
+                if(!skip) pass += this.get(row, col);
             }
         }
 

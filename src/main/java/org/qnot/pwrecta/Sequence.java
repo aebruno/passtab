@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sequence {
-    public static String DEFAULT_SEQUENCE = "8-SW";
+    public static String DEFAULT_SEQUENCE = "8:SW";
     
     private List<SequenceItem> items;
     
@@ -27,15 +27,15 @@ public class Sequence {
             throw new SequenceParseException("Empty sequence string");
         }
         
-        String[] items = seq.split(";");
+        String[] items = seq.split(",");
         if (items == null || items.length == 0) {
-            throw new SequenceParseException("No sequence items found. Please be sure to separate items with a ';'");
+            throw new SequenceParseException("No sequence items found. Please be sure to separate items with a ','");
         }
         
         for(String i : items) {
-            String[] spec = i.split("-");
+            String[] spec = i.split(":");
             if (spec == null || spec.length != 2) {
-                throw new SequenceParseException("Invalid sequence item. Format should be [length]-[direction]");
+                throw new SequenceParseException("Invalid sequence item. Format should be [length]:[direction]");
             }
 
             Direction direction = Direction.fromString(spec[1]);
