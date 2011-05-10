@@ -37,7 +37,9 @@ public class Main {
             Main.printHelpAndExit(options);
         }
 
-        if (cmd.hasOption("g")) {
+        if (cmd.hasOption("p")) {
+            Main.print(cmd);
+        } else if (cmd.hasOption("g")) {
             Main.fetchPassword(cmd);
         } else {
             Main.generate(cmd);
@@ -46,20 +48,12 @@ public class Main {
         System.exit(0);
     }
     
+    public static void print(CommandLine cmd) throws IOException {
+        TabulaRecta tabulaRecta = Main.getDatabase(cmd);
+        Main.getOutputFormat(cmd).output(Main.getOutputStream(cmd), tabulaRecta);
+    }
+    
     public static void fetchPassword(CommandLine cmd) throws IOException {
-        File jsonFile = null;
-
-        String inFile = cmd.getOptionValue("i");
-        if (inFile != null && inFile.length() > 0) {
-            jsonFile = new File(inFile);
-        } else {
-            jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
-        }
-
-        String json = FileUtils.readFileToString(jsonFile);
-        Gson gson = new Gson();
-        TabulaRecta tabulaRecta = gson.fromJson(json, TabulaRecta.class);
-
         String coords = cmd.getOptionValue("g");
         if (coords == null || coords.length() == 0) {
             Main.printHelpAndExit(options,
@@ -72,6 +66,8 @@ public class Main {
                     "Invalid value. Please provide a row:column (ex. C:F)");
         }
 
+        TabulaRecta tabulaRecta = Main.getDatabase(cmd);
+        
         int row = tabulaRecta.getHeader().getIndex(parts[0]);
         int col = tabulaRecta.getHeader().getIndex(parts[1]);
         if (row == -1 || col == -1) {
@@ -106,26 +102,55 @@ public class Main {
             jsonFormat.output(jsonOut, tabulaRecta);
             pdfFormat.output(pdfOut, tabulaRecta);
         } else {
-            String format = cmd.getOptionValue("f");
-            String outFile = cmd.getOptionValue("o");
-            OutputStream outputStream = System.out;
-
-            if (outFile != null && outFile.length() > 0) {
-                outputStream = new FileOutputStream(outFile);
-            }
-
-            OutputFormat outputFormat = null;
-
-            if ("json".equals(format)) {
-                outputFormat = new JSONOutput();
-            } else if ("pdf".equals(format)) {
-                outputFormat = new PDFOutput();
-            } else {
-                outputFormat = new AsciiOutput();
-            }
-
-            outputFormat.output(outputStream, tabulaRecta);
+            Main.getOutputFormat(cmd).output(Main.getOutputStream(cmd), tabulaRecta);
         }
+    }
+    
+    private static OutputFormat getOutputFormat(CommandLine cmd) {
+        String format = cmd.getOptionValue("f");
+        OutputFormat outputFormat = null;
+
+        if ("json".equals(format)) {
+            outputFormat = new JSONOutput();
+        } else if ("pdf".equals(format)) {
+            outputFormat = new PDFOutput();
+        } else {
+            outputFormat = new AsciiOutput();
+        }
+        
+        return outputFormat;
+    }
+    
+    private static TabulaRecta getDatabase(CommandLine cmd) throws IOException {
+        File jsonFile = null;
+
+        String inFile = cmd.getOptionValue("i");
+        if (inFile != null && inFile.length() > 0) {
+            jsonFile = new File(inFile);
+        } else {
+            jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
+        }
+        
+        if(!jsonFile.exists() || !jsonFile.canRead()) {
+            Main.printHelpAndExit(options, "Failed to read db file: "+jsonFile.getAbsolutePath());
+        }
+
+        String json = FileUtils.readFileToString(jsonFile);
+        Gson gson = new Gson();
+        TabulaRecta tabulaRecta = gson.fromJson(json, TabulaRecta.class);
+        
+        return tabulaRecta;
+    }
+    
+    private static OutputStream getOutputStream(CommandLine cmd) throws IOException {
+        String outFile = cmd.getOptionValue("o");
+        OutputStream outputStream = System.out;
+
+        if (outFile != null && outFile.length() > 0) {
+            outputStream = new FileOutputStream(outFile);
+        }
+        
+        return outputStream;
     }
   
     @SuppressWarnings("static-access")
@@ -168,7 +193,6 @@ public class Main {
         options.addOption(
                 OptionBuilder.withLongOpt("print")
                              .withDescription("print existing pwrecta database")
-                             .hasArg()
                              .create("p")
         );
         options.addOption(
