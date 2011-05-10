@@ -65,6 +65,18 @@ public class Main {
             Main.printHelpAndExit(options,
                     "Invalid value. Please provide a row:column (ex. C:F)");
         }
+        
+        String seq = cmd.getOptionValue("s");
+        if (seq == null || seq.length() == 0) {
+            seq = Sequence.DEFAULT_SEQUENCE;
+        }
+        
+        Sequence sequence = null;
+        try {
+            sequence = Sequence.fromString(seq);
+        } catch(SequenceParseException e) {
+            Main.printHelpAndExit(options, "Invalid sequence string: "+e.getMessage());
+        }
 
         TabulaRecta tabulaRecta = Main.getDatabase(cmd);
         
@@ -75,7 +87,7 @@ public class Main {
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
-        System.out.println(tabulaRecta.get(row, col));     
+        System.out.println(tabulaRecta.getPassword(row, col, sequence));     
     }
     
     public static void generate(CommandLine cmd) throws IOException {
@@ -83,7 +95,7 @@ public class Main {
                 Alphabet.ALPHA_NUM_SYMBOL);
         tabulaRecta.generate();
 
-        if (cmd.hasOption("s")) {
+        if (cmd.hasOption("d")) {
             OutputStream jsonOut = null;
             OutputStream pdfOut = null;
 
@@ -168,9 +180,9 @@ public class Main {
                          .create("h")
         );
         options.addOption(
-            OptionBuilder.withLongOpt("store")
-                         .withDescription("store pwrecta to JSON and write out PDF file")
-                         .create("s")
+            OptionBuilder.withLongOpt("dbsave")
+                         .withDescription("save pwrecta db to JSON and write out PDF file")
+                         .create("d")
         );
         options.addOption(
             OptionBuilder.withLongOpt("name")
@@ -201,11 +213,17 @@ public class Main {
                          .hasArg()
                          .create("i")
         );
+        options.addOption(
+                OptionBuilder.withLongOpt("sequence")
+                             .withDescription("sequence for fetching password")
+                             .hasArg()
+                             .create("s")
+            );
     }
 
     public static void printHelpAndExit(Options options, String message) {
         if (message != null)
-            logger.fatal("Usage error: " + message);
+            logger.fatal("Usage error: " + message + "\n");
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("pwrecta", options);
         if (message != null) {
