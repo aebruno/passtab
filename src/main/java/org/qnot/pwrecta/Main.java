@@ -93,6 +93,8 @@ public class Main {
     public static void generate(CommandLine cmd) throws IOException {
         TabulaRecta tabulaRecta = new TabulaRecta(Alphabet.ALPHA_UPPER_NUM,
                 Alphabet.ALPHA_NUM_SYMBOL);
+        
+        logger.info("Generating a Password Recta...");
         tabulaRecta.generate();
 
         if (cmd.hasOption("d")) {
