@@ -125,8 +125,6 @@ public class TabulaRecta {
             throw new RuntimeException("Failed to set secure algorithm", e);
         }
 
-        // rand.reSeedSecure();
-
         for (int i = 0; i < this.headerAlphabet.size(); i++) {
             tabulaRecta[i] = generateRow(i, rand);
         }
