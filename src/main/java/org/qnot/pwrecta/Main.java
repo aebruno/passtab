@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -77,6 +79,29 @@ public class Main {
         } catch(SequenceParseException e) {
             Main.printHelpAndExit(options, "Invalid sequence string: "+e.getMessage());
         }
+        
+        Direction[] directionPriority = null;
+        if(cmd.hasOption("c")) {
+            String collision = cmd.getOptionValue("c");
+            if("cc".equalsIgnoreCase(collision) || 
+               "clockwise_compass".equalsIgnoreCase(collision)) {
+                directionPriority = Direction.clockwiseCompass();
+            } else if("ccc".equalsIgnoreCase(collision) || 
+                      "counterclockwise_compass".equalsIgnoreCase(collision)) {
+                directionPriority = Direction.counterclockwiseCompass();
+            } else {
+            String[] cparts = collision.split(",");
+                List<Direction> list = new ArrayList<Direction>();
+                for(String c : cparts) {
+                    try {
+                        list.add(Direction.fromString(c));
+                    } catch(SequenceParseException e) {
+                        Main.printHelpAndExit(options, "Direction parse error: "+e.getMessage());
+                    }
+                }
+                directionPriority = list.toArray(new Direction[list.size()]);
+            }
+        }
 
         TabulaRecta tabulaRecta = Main.getDatabase(cmd);
         
@@ -87,7 +112,7 @@ public class Main {
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
-        System.out.println(tabulaRecta.getPassword(row, col, sequence));     
+        System.out.println(tabulaRecta.getPassword(row, col, sequence, directionPriority));     
     }
     
     public static void generate(CommandLine cmd) throws IOException {
@@ -253,6 +278,12 @@ public class Main {
                              .withDescription("header alphabet to use for row/column headings")
                              .hasArg()
                              .create("x")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("collision")
+                             .withDescription("direction precedence should a collision occur")
+                             .hasArg()
+                             .create("c")
             );
     }
 

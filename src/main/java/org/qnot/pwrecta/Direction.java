@@ -24,5 +24,13 @@ public enum Direction {
             throw new SequenceParseException("Invalid Direction. Must be [n|w|e|w|ne|nw|se|sw]");
         }
     }
+    
+    public static Direction[] clockwiseCompass() {
+        return new Direction[]{N,NW,W,SW,S,SE,E,NE};
+    }
+    
+    public static Direction[] counterclockwiseCompass() {
+        return new Direction[]{N,NE,E,SE,S,SW,W,NW};
+    }
 
 }

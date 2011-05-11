@@ -60,55 +60,49 @@ public class TabulaRecta {
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence) {
+        return this.getPassword(startRow, startCol, sequence, null);
+    }
+
+    public String getPassword(int startRow, int startCol, Sequence sequence,
+            Direction[] directionPriority) {
         String pass = this.get(startRow, startCol);
 
-        int row = startRow;
-        int col = startCol;
+        Position pos = new Position(startRow, startCol);
 
         for (SequenceItem i : sequence.getItemList()) {
 
             Direction dir = i.getDirection();
             int len = i.getLength();
             boolean skip = false;
-            
-            if(len < 0) {
+
+            if (len < 0) {
                 skip = true;
                 len = Math.abs(len);
             }
 
             for (int x = 0; x < len; x++) {
-                switch (dir) {
-                case N:
-                    row--;
-                    break;
-                case S:
-                    row++;
-                case E:
-                    col--;
-                case W:
-                    col++;
-                case NE:
-                    row--;
-                    col--;
-                case NW:
-                    row--;
-                    col++;
-                case SE:
-                    row++;
-                    col--;
-                case SW:
-                    row++;
-                    col++;
+                pos.move(dir);
+
+                if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)
+                        && directionPriority != null) {
+                    pos.backup();
+
+                    for (Direction dp : directionPriority) {
+                        pos.move(dp);
+                        if(pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
+                            pos.backup();
+                        } else {
+                            break;
+                        }
+                    }
                 }
 
-                // XXX add better algorithm here to detect when we hit a wall
-                //     need to define direction precedence. If can't got N then go W etc.
-                if (row >= this.rows())
-                    row = this.rows() - 1;
-                if (col >= this.cols())
-                    col = this.cols() - 1;
-
-                if(!skip) pass += this.get(row, col);
+                if(pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
+                    pos.setWithinBounds(this.rows() - 1, this.cols() - 1);
+                }
+                
+                if (!skip)
+                    pass += this.get(pos.getRow(), pos.getCol());
             }
         }
 
