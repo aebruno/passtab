@@ -1,6 +1,6 @@
 package org.qnot.pwrecta;
 
-public class SequenceParseException extends Exception {
+public class SequenceParseException extends PasswordRectaException {
 
     private static final long serialVersionUID = -8532492297318885298L;
 

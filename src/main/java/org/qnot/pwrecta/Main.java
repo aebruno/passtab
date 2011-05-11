@@ -91,8 +91,26 @@ public class Main {
     }
     
     public static void generate(CommandLine cmd) throws IOException {
-        TabulaRecta tabulaRecta = new TabulaRecta(Alphabet.ALPHA_UPPER_NUM,
-                Alphabet.ALPHA_NUM_SYMBOL);
+        Alphabet headerAlphabet = Alphabet.ALPHA_UPPER_NUM;
+        Alphabet dataAlphabet = Alphabet.ALPHA_NUM_SYMBOL;
+        
+        if(cmd.hasOption("a")) {
+            try {
+                dataAlphabet = Alphabet.fromString(cmd.getOptionValue("a"));
+            } catch(AlphabetParseException e) {
+                Main.printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
+            }
+        }
+        
+        if(cmd.hasOption("x")) {
+            try {
+                headerAlphabet = Alphabet.fromString(cmd.getOptionValue("x"));
+            } catch(AlphabetParseException e) {
+                Main.printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
+            }
+        }
+        
+        TabulaRecta tabulaRecta = new TabulaRecta(headerAlphabet, dataAlphabet);
         
         logger.info("Generating a Password Recta...");
         tabulaRecta.generate();
@@ -220,6 +238,18 @@ public class Main {
                              .withDescription("sequence for fetching password")
                              .hasArg()
                              .create("s")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("alphabet")
+                             .withDescription("alphabet to use for Password Recta")
+                             .hasArg()
+                             .create("a")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("header")
+                             .withDescription("header alphabet to use for row/column headings")
+                             .hasArg()
+                             .create("x")
             );
     }
 
