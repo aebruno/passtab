@@ -9,8 +9,6 @@ package org.qnot.pwrecta;
 public class Alphabet {
     private String[] alphabet;
     
-    public Alphabet() { }
-    
     public Alphabet(String[] alphabet) {
         this.alphabet = alphabet;
     }
