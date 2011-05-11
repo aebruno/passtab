@@ -20,7 +20,6 @@ public class Sequence {
         return this.items;
     }
     
-    // 1-up;2-down;3-diag;4-left;
     public static Sequence fromString(String seq) throws SequenceParseException {
         Sequence sequence = new Sequence();
         if(seq == null || seq.length() == 0) {
