@@ -11,11 +11,10 @@
       <unpack>true</unpack>
       <scope>runtime</scope>
       <includes>
-        <include>cern.colt:colt</include>
-        <include>commons-math:commons-math</include>
+        <include>com.google.code.gson:gson</include>
         <include>org.apache.pdfbox:pdfbox</include>
         <include>org.apache.pdfbox:fontbox</include>
-        <include>com.google.code.gson:gson</include>
+        <include>org.apache.commons:commons-math</include>
         <include>commons-lang:commons-lang</include>
         <include>commons-cli:commons-cli</include>
         <include>commons-io:commons-io</include>
