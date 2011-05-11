@@ -105,6 +105,9 @@ public class Main {
         if(cmd.hasOption("x")) {
             try {
                 headerAlphabet = Alphabet.fromString(cmd.getOptionValue("x"));
+                if(headerAlphabet.size() > 36) {
+                    Main.printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
+                }
             } catch(AlphabetParseException e) {
                 Main.printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
             }
