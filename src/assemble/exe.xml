@@ -19,6 +19,7 @@
         <include>commons-cli:commons-cli</include>
         <include>commons-io:commons-io</include>
         <include>commons-logging:commons-logging</include>
+        <include>commons-configuration:commons-configuration</include>
       </includes>
     </dependencySet>
   </dependencySets>
