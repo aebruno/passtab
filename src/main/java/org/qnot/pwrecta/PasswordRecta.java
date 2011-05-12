@@ -183,9 +183,9 @@ public class PasswordRecta {
             }
         }
         
-        if(cmd.hasOption("x")) {
+        if(cmd.hasOption("b")) {
             try {
-                headerAlphabet = Alphabet.fromString(cmd.getOptionValue("x"));
+                headerAlphabet = Alphabet.fromString(cmd.getOptionValue("b"));
                 if(headerAlphabet.size() > 36) {
                     printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
                 }
@@ -345,7 +345,7 @@ public class PasswordRecta {
                 OptionBuilder.withLongOpt("header")
                              .withDescription("header alphabet to use for row/column headings")
                              .hasArg()
-                             .create("x")
+                             .create("b")
             );
         options.addOption(
                 OptionBuilder.withLongOpt("collision")
