@@ -158,6 +158,11 @@ public class PasswordRecta {
                 directionPriority = list.toArray(new Direction[list.size()]);
             }
         }
+        
+        boolean skipStart = false;
+        if(cmd.hasOption("x")) {
+            skipStart = true;
+        }
 
         TabulaRecta tabulaRecta = getDatabase(cmd);
         
@@ -168,7 +173,8 @@ public class PasswordRecta {
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
-        System.out.println(tabulaRecta.getPassword(rowIndex, colIndex, sequence, directionPriority));     
+        String password = tabulaRecta.getPassword(rowIndex, colIndex, sequence, skipStart, directionPriority);
+        System.out.println(password);     
     }
     
     public void generate(CommandLine cmd) throws IOException {
@@ -358,6 +364,11 @@ public class PasswordRecta {
                              .withDescription("get password for tag")
                              .hasArg()
                              .create("t")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("skipstart")
+                             .withDescription("Don't include the starting cell in the password")
+                             .create("x")
             );
     }
 

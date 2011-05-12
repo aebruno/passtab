@@ -32,11 +32,11 @@ public class TabulaRecta {
     public Alphabet getHeader() {
         return this.headerAlphabet;
     }
-    
+
     public Alphabet getDataAlphabet() {
         return this.dataAlphabet;
     }
-    
+
     public String[][] getRawData() {
         return this.tabulaRecta;
     }
@@ -68,12 +68,22 @@ public class TabulaRecta {
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence) {
-        return this.getPassword(startRow, startCol, sequence, null);
+        return this.getPassword(startRow, startCol, sequence, false, null);
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence,
             Direction[] directionPriority) {
-        String pass = this.get(startRow, startCol);
+        return this.getPassword(startRow, startCol, sequence, false,
+                directionPriority);
+    }
+
+    public String getPassword(int startRow, int startCol, Sequence sequence,
+            boolean skipStart, Direction[] directionPriority) {
+        String pass = "";
+        
+        if(!skipStart) {
+            pass += this.get(startRow, startCol);
+        }
 
         Position pos = new Position(startRow, startCol);
 
@@ -97,7 +107,7 @@ public class TabulaRecta {
 
                     for (Direction dp : directionPriority) {
                         pos.move(dp);
-                        if(pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
+                        if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
                             pos.backup();
                         } else {
                             break;
@@ -105,10 +115,10 @@ public class TabulaRecta {
                     }
                 }
 
-                if(pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
+                if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
                     pos.setWithinBounds(this.rows() - 1, this.cols() - 1);
                 }
-                
+
                 if (!skip)
                     pass += this.get(pos.getRow(), pos.getCol());
             }
