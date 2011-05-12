@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.cli.CommandLine;
@@ -63,7 +64,7 @@ public class PasswordRecta {
 
         if (cmd.hasOption("p")) {
             print(cmd);
-        } else if (cmd.hasOption("g")) {
+        } else if (cmd.hasOption("g") || cmd.hasOption("t")) {
             fetchPassword(cmd);
         } else {
             generate(cmd);
@@ -77,18 +78,47 @@ public class PasswordRecta {
         getOutputFormat(cmd).output(getOutputStream(cmd), tabulaRecta);
     }
     
+    @SuppressWarnings("unchecked")
     public void fetchPassword(CommandLine cmd) throws IOException {
-        String coords = cmd.getOptionValue("g");
+        String coords = null;
+        
+        if(cmd.hasOption("t")) {
+            String tag = cmd.getOptionValue("t");
+            if(tag == null || tag.length() == 0) {
+                printHelpAndExit(options, "Please provide a non empty tag");
+            }
+            
+            Iterator<String> kit = properties.getKeys("tag");
+            if(kit.hasNext()) {
+                while(kit.hasNext()) {
+                    String key = kit.next();
+                    if(key.contains(tag)) {
+                        coords = properties.getString(key);
+                        break;
+                    }
+                }
+            }
+            
+            if(coords == null) {
+                printHelpAndExit(options, "Tag not found in configuration file: "+tag);
+            }
+        } else {
+            coords = cmd.getOptionValue("g");
+        }
+        
         if (coords == null || coords.length() == 0) {
             printHelpAndExit(options,
-                    "Please provide a row:column (ex. C:F)");
+                "Please provide a row:column (ex. C:F)");
         }
 
         String[] parts = coords.split(":");
         if (parts == null || parts.length != 2) {
             printHelpAndExit(options,
-                    "Invalid value. Please provide a row:column (ex. C:F)");
+                "Invalid value. Please provide a row:column (ex. C:F)");
         }
+        
+        String row = parts[0];
+        String col = parts[1];
         
         String seq = cmd.getOptionValue("s");
         if (seq == null || seq.length() == 0) {
@@ -131,14 +161,14 @@ public class PasswordRecta {
 
         TabulaRecta tabulaRecta = getDatabase(cmd);
         
-        int row = tabulaRecta.getHeader().getIndex(parts[0]);
-        int col = tabulaRecta.getHeader().getIndex(parts[1]);
-        if (row == -1 || col == -1) {
+        int rowIndex = tabulaRecta.getHeader().getIndex(row);
+        int colIndex = tabulaRecta.getHeader().getIndex(col);
+        if (rowIndex == -1 || colIndex == -1) {
             printHelpAndExit(options,
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
-        System.out.println(tabulaRecta.getPassword(row, col, sequence, directionPriority));     
+        System.out.println(tabulaRecta.getPassword(rowIndex, colIndex, sequence, directionPriority));     
     }
     
     public void generate(CommandLine cmd) throws IOException {
@@ -322,6 +352,12 @@ public class PasswordRecta {
                              .withDescription("direction precedence should a collision occur")
                              .hasArg()
                              .create("c")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("tag")
+                             .withDescription("get password for tag")
+                             .hasArg()
+                             .create("t")
             );
     }
 
