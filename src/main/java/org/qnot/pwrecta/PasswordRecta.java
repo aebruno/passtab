@@ -14,6 +14,8 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +25,15 @@ import com.google.gson.Gson;
 public class PasswordRecta {
     private static Log logger = LogFactory.getLog(PasswordRecta.class);
     private Options options;
+    protected PropertiesConfiguration properties;
+    
+    public PasswordRecta() {
+        properties = new PropertiesConfiguration();
+        try {
+            properties.load(".pwrecta_rc");
+        } catch(ConfigurationException ignored) {
+        }
+    }
     
     public static void main(String[] args) {
         PasswordRecta pwrecta = new PasswordRecta();
@@ -81,6 +92,10 @@ public class PasswordRecta {
         
         String seq = cmd.getOptionValue("s");
         if (seq == null || seq.length() == 0) {
+            seq = properties.getString("sequence");
+        }
+        
+        if(seq == null) {
             seq = Sequence.DEFAULT_SEQUENCE;
         }
         
