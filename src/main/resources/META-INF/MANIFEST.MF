@@ -1,1 +1,1 @@
-Main-Class: org.qnot.pwrecta.Main
+Main-Class: org.qnot.pwrecta.PasswordRecta

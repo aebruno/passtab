@@ -20,51 +20,62 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
-public class Main {
-    private static Log logger = LogFactory.getLog(Main.class);
-    private static Options options;
+public class PasswordRecta {
+    private static Log logger = LogFactory.getLog(PasswordRecta.class);
+    private Options options;
+    
+    public static void main(String[] args) {
+        PasswordRecta pwrecta = new PasswordRecta();
+        
+        try {
+            pwrecta.run(args);
+        } catch(Exception e) {
+            logger.fatal("Something really bad happened: "+e.getMessage());
+            e.printStackTrace();
+        }   
+    }
 
-    public static void main(String[] args) throws Exception {
-        Main.buildOptions();
+    public void run(String[] args) throws IOException {
+        buildOptions();
 
         CommandLineParser parser = new PosixParser();
         CommandLine cmd = null;
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            Main.printHelpAndExit(options, e.getMessage());
+            printHelpAndExit(options, e.getMessage());
         }
 
         if (cmd.hasOption("h")) {
-            Main.printHelpAndExit(options);
+            printHelpAndExit(options);
         }
 
         if (cmd.hasOption("p")) {
-            Main.print(cmd);
+            print(cmd);
         } else if (cmd.hasOption("g")) {
-            Main.fetchPassword(cmd);
+            fetchPassword(cmd);
         } else {
-            Main.generate(cmd);
+            generate(cmd);
         }
 
         System.exit(0);
     }
     
-    public static void print(CommandLine cmd) throws IOException {
-        TabulaRecta tabulaRecta = Main.getDatabase(cmd);
-        Main.getOutputFormat(cmd).output(Main.getOutputStream(cmd), tabulaRecta);
+    public void print(CommandLine cmd) throws IOException {
+        TabulaRecta tabulaRecta = getDatabase(cmd);
+        getOutputFormat(cmd).output(getOutputStream(cmd), tabulaRecta);
     }
     
-    public static void fetchPassword(CommandLine cmd) throws IOException {
+    public void fetchPassword(CommandLine cmd) throws IOException {
         String coords = cmd.getOptionValue("g");
         if (coords == null || coords.length() == 0) {
-            Main.printHelpAndExit(options,
+            printHelpAndExit(options,
                     "Please provide a row:column (ex. C:F)");
         }
 
         String[] parts = coords.split(":");
         if (parts == null || parts.length != 2) {
-            Main.printHelpAndExit(options,
+            printHelpAndExit(options,
                     "Invalid value. Please provide a row:column (ex. C:F)");
         }
         
@@ -77,7 +88,7 @@ public class Main {
         try {
             sequence = Sequence.fromString(seq);
         } catch(SequenceParseException e) {
-            Main.printHelpAndExit(options, "Invalid sequence string: "+e.getMessage());
+            printHelpAndExit(options, "Invalid sequence string: "+e.getMessage());
         }
         
         Direction[] directionPriority = null;
@@ -96,26 +107,26 @@ public class Main {
                     try {
                         list.add(Direction.fromString(c));
                     } catch(SequenceParseException e) {
-                        Main.printHelpAndExit(options, "Direction parse error: "+e.getMessage());
+                        printHelpAndExit(options, "Direction parse error: "+e.getMessage());
                     }
                 }
                 directionPriority = list.toArray(new Direction[list.size()]);
             }
         }
 
-        TabulaRecta tabulaRecta = Main.getDatabase(cmd);
+        TabulaRecta tabulaRecta = getDatabase(cmd);
         
         int row = tabulaRecta.getHeader().getIndex(parts[0]);
         int col = tabulaRecta.getHeader().getIndex(parts[1]);
         if (row == -1 || col == -1) {
-            Main.printHelpAndExit(options,
+            printHelpAndExit(options,
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
         System.out.println(tabulaRecta.getPassword(row, col, sequence, directionPriority));     
     }
     
-    public static void generate(CommandLine cmd) throws IOException {
+    public void generate(CommandLine cmd) throws IOException {
         Alphabet headerAlphabet = Alphabet.ALPHA_UPPER_NUM;
         Alphabet dataAlphabet = Alphabet.ALPHA_NUM_SYMBOL;
         
@@ -123,7 +134,7 @@ public class Main {
             try {
                 dataAlphabet = Alphabet.fromString(cmd.getOptionValue("a"));
             } catch(AlphabetParseException e) {
-                Main.printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
+                printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
             }
         }
         
@@ -131,10 +142,10 @@ public class Main {
             try {
                 headerAlphabet = Alphabet.fromString(cmd.getOptionValue("x"));
                 if(headerAlphabet.size() > 36) {
-                    Main.printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
+                    printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
                 }
             } catch(AlphabetParseException e) {
-                Main.printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
+                printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
             }
         }
         
@@ -162,11 +173,11 @@ public class Main {
             jsonFormat.output(jsonOut, tabulaRecta);
             pdfFormat.output(pdfOut, tabulaRecta);
         } else {
-            Main.getOutputFormat(cmd).output(Main.getOutputStream(cmd), tabulaRecta);
+            getOutputFormat(cmd).output(getOutputStream(cmd), tabulaRecta);
         }
     }
     
-    private static OutputFormat getOutputFormat(CommandLine cmd) {
+    private OutputFormat getOutputFormat(CommandLine cmd) {
         String format = cmd.getOptionValue("f");
         OutputFormat outputFormat = null;
 
@@ -181,7 +192,7 @@ public class Main {
         return outputFormat;
     }
     
-    private static TabulaRecta getDatabase(CommandLine cmd) throws IOException {
+    private TabulaRecta getDatabase(CommandLine cmd) throws IOException {
         File jsonFile = null;
 
         String inFile = cmd.getOptionValue("i");
@@ -192,7 +203,7 @@ public class Main {
         }
         
         if(!jsonFile.exists() || !jsonFile.canRead()) {
-            Main.printHelpAndExit(options, "Failed to read db file: "+jsonFile.getAbsolutePath());
+            printHelpAndExit(options, "Failed to read db file: "+jsonFile.getAbsolutePath());
         }
 
         String json = FileUtils.readFileToString(jsonFile);
@@ -202,7 +213,7 @@ public class Main {
         return tabulaRecta;
     }
     
-    private static OutputStream getOutputStream(CommandLine cmd) throws IOException {
+    private OutputStream getOutputStream(CommandLine cmd) throws IOException {
         String outFile = cmd.getOptionValue("o");
         OutputStream outputStream = System.out;
 
@@ -214,8 +225,8 @@ public class Main {
     }
   
     @SuppressWarnings("static-access")
-    public static void buildOptions() {
-        Main.options = new Options();
+    public void buildOptions() {
+        options = new Options();
         options.addOption(
             OptionBuilder.withLongOpt("output")
                          .withDescription("output file")
@@ -287,7 +298,7 @@ public class Main {
             );
     }
 
-    public static void printHelpAndExit(Options options, String message) {
+    public void printHelpAndExit(Options options, String message) {
         if (message != null)
             logger.fatal("Usage error: " + message + "\n");
         HelpFormatter formatter = new HelpFormatter();
@@ -299,7 +310,7 @@ public class Main {
         }
     }
 
-    public static void printHelpAndExit(Options options) {
+    public void printHelpAndExit(Options options) {
         printHelpAndExit(options, null);
     }
 
