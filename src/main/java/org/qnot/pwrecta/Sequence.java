@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sequence {
-    public static String DEFAULT_SEQUENCE = "8:SW";
+    public static String DEFAULT_SEQUENCE = "12:SW";
     
     private List<SequenceItem> items;
     
