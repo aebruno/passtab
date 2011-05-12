@@ -32,6 +32,14 @@ public class TabulaRecta {
     public Alphabet getHeader() {
         return this.headerAlphabet;
     }
+    
+    public Alphabet getDataAlphabet() {
+        return this.dataAlphabet;
+    }
+    
+    public String[][] getRawData() {
+        return this.tabulaRecta;
+    }
 
     public int rows() {
         return this.tabulaRecta.length;

@@ -211,8 +211,11 @@ public class PasswordRecta {
         File jsonFile = null;
 
         String inFile = cmd.getOptionValue("i");
+        String inFileProps = properties.getString("pwrecta.path");
         if (inFile != null && inFile.length() > 0) {
             jsonFile = new File(inFile);
+        } else if(inFileProps != null && inFileProps.length() > 0){
+            jsonFile = new File(inFileProps);
         } else {
             jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
         }
@@ -224,6 +227,15 @@ public class PasswordRecta {
         String json = FileUtils.readFileToString(jsonFile);
         Gson gson = new Gson();
         TabulaRecta tabulaRecta = gson.fromJson(json, TabulaRecta.class);
+        
+        // Check to make sure we loaded a valid JSON file
+        if(tabulaRecta == null ||
+           tabulaRecta.getHeader() == null || tabulaRecta.getHeader().size() == 0 ||
+           tabulaRecta.getDataAlphabet() == null || tabulaRecta.getDataAlphabet().size() == 0 ||
+           tabulaRecta.getRawData() == null || tabulaRecta.rows() == 0 || tabulaRecta.cols() == 0
+           ) {
+            printHelpAndExit(options, "Not a valid pwrecta JSON file: "+jsonFile.getAbsolutePath());
+        }
         
         return tabulaRecta;
     }
