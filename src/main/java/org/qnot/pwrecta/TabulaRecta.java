@@ -86,10 +86,11 @@ public class TabulaRecta {
         }
 
         Position pos = new Position(startRow, startCol);
+        Direction dir = null;
 
         for (SequenceItem i : sequence.getItemList()) {
 
-            Direction dir = i.getDirection();
+            dir = i.getDirection();
             int len = i.getLength();
             boolean skip = false;
 
@@ -110,6 +111,7 @@ public class TabulaRecta {
                         if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
                             pos.backup();
                         } else {
+                            dir = dp;
                             break;
                         }
                     }

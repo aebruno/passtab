@@ -30,7 +30,7 @@ public enum Direction {
     }
     
     public static Direction[] counterclockwiseCompass() {
-        return new Direction[]{N,NE,E,SE,S,SW,W,NW};
+        return new Direction[]{NE,E,SE,S,SW,W,NW,N};
     }
 
 }
