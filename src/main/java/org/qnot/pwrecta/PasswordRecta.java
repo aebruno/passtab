@@ -98,18 +98,18 @@ public class PasswordRecta {
             }
             
             if(cmd.hasOption("v")) {
-                System.out.println("tag\tcoords\tlogin\tpassword\twebsite");
+                System.out.println("tag\tcoords\tpassword\tlogin\twebsite");
             }
             
             for(String tag : tagMap.keySet()) {
                 String key = "tag."+tag;
                 String coords = properties.getString(key+".coords");
-                String login = properties.getString(key+".login");
-                String website = properties.getString(key+".website");
+                String login = properties.getString(key+".login", "");
+                String website = properties.getString(key+".website", "");
                 String password = fetchPassword(coords, cmd);
                 
                 if(cmd.hasOption("v")) {
-                    System.out.println(tag+"\t"+coords+"\t"+login+"\t"+password+"\t"+website);
+                    System.out.println(tag+"\t"+coords+"\t"+password+"\t"+login+"\t"+website);
                 } else {
                     System.out.println(tag+"\t"+password);
                 }
@@ -138,8 +138,8 @@ public class PasswordRecta {
                     if(key.contains(tag+".coords")) {
                         String prefix = key.replaceAll("\\.coords", "");
                         coords = properties.getString(key);
-                        login = properties.getString(prefix+".login");
-                        website = properties.getString(prefix+".website");
+                        login = properties.getString(prefix+".login", "");
+                        website = properties.getString(prefix+".website", "");
                         break;
                     }
                 }
@@ -160,7 +160,7 @@ public class PasswordRecta {
         String password = fetchPassword(coords, cmd);
         
         if(cmd.hasOption("v") && tag != null) {
-            System.out.println(tag+"\t"+coords+"\t"+login+"\t"+password+"\t"+website);
+            System.out.println(tag+"\t"+coords+"\t"+password+"\t"+login+"\t"+website);
         } else {
             System.out.println(password);
         }
