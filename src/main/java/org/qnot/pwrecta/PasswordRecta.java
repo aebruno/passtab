@@ -5,8 +5,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -75,9 +77,6 @@ public class PasswordRecta {
         System.exit(0);
     }
     
-    public void export(CommandLine cmd) throws IOException {
-        
-    }
     
     public void print(CommandLine cmd) throws IOException {
         TabulaRecta tabulaRecta = getDatabase(cmd);
@@ -85,10 +84,49 @@ public class PasswordRecta {
     }
     
     @SuppressWarnings("unchecked")
+    public void export(CommandLine cmd) throws IOException {
+        Iterator<String> kit = properties.getKeys("tag");
+        if(kit.hasNext()) {
+            Map<String, Boolean> tagMap = new HashMap<String, Boolean>();
+            while(kit.hasNext()) {
+                String key = kit.next();
+                String[] parts = key.split("\\.");
+                if(parts == null || parts.length < 2) {
+                    printHelpAndExit(options, "Malformed configuration file. This property is invalid: "+key);
+                }
+                tagMap.put(parts[1], true);
+            }
+            
+            if(cmd.hasOption("v")) {
+                System.out.println("tag\tcoords\tlogin\tpassword\twebsite");
+            }
+            
+            for(String tag : tagMap.keySet()) {
+                String key = "tag."+tag;
+                String coords = properties.getString(key+".coords");
+                String login = properties.getString(key+".login");
+                String website = properties.getString(key+".website");
+                String password = fetchPassword(coords, cmd);
+                
+                if(cmd.hasOption("v")) {
+                    System.out.println(tag+"\t"+coords+"\t"+login+"\t"+password+"\t"+website);
+                } else {
+                    System.out.println(tag+"\t"+password);
+                }
+            }
+        } else {
+            printHelpAndExit(options, "No tags defined in user config file: "+properties.getFile().getAbsolutePath());
+        }
+    }
+
+    @SuppressWarnings("unchecked")
     public void printPassword(CommandLine cmd) throws IOException {
         String coords = null;
+        String login = null;
+        String website = null;
+        String tag = null;
         if(cmd.hasOption("t")) {
-            String tag = cmd.getOptionValue("t");
+            tag = cmd.getOptionValue("t");
             if(tag == null || tag.length() == 0) {
                 printHelpAndExit(options, "Please provide a non empty tag");
             }
@@ -97,8 +135,11 @@ public class PasswordRecta {
             if(kit.hasNext()) {
                 while(kit.hasNext()) {
                     String key = kit.next();
-                    if(key.contains(tag)) {
+                    if(key.contains(tag+".coords")) {
+                        String prefix = key.replaceAll("\\.coords", "");
                         coords = properties.getString(key);
+                        login = properties.getString(prefix+".login");
+                        website = properties.getString(prefix+".website");
                         break;
                     }
                 }
@@ -117,7 +158,12 @@ public class PasswordRecta {
         }
         
         String password = fetchPassword(coords, cmd);
-        System.out.println(password);
+        
+        if(cmd.hasOption("v") && tag != null) {
+            System.out.println(tag+"\t"+coords+"\t"+login+"\t"+password+"\t"+website);
+        } else {
+            System.out.println(password);
+        }
     }
     
     private String fetchPassword(String coords, CommandLine cmd) throws IOException {
@@ -404,6 +450,11 @@ public class PasswordRecta {
                 OptionBuilder.withLongOpt("export")
                              .withDescription("Export password for all tags defined in user config file")
                              .create("e")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("verbose")
+                             .withDescription("print out all fields from config file when fetching a password")
+                             .create("v")
             );
     }
 
