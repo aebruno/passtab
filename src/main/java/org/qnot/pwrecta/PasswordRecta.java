@@ -64,13 +64,19 @@ public class PasswordRecta {
 
         if (cmd.hasOption("p")) {
             print(cmd);
+        } else if(cmd.hasOption("e")) {
+            export(cmd);
         } else if (cmd.hasOption("g") || cmd.hasOption("t")) {
-            fetchPassword(cmd);
+            printPassword(cmd);
         } else {
             generate(cmd);
         }
 
         System.exit(0);
+    }
+    
+    public void export(CommandLine cmd) throws IOException {
+        
     }
     
     public void print(CommandLine cmd) throws IOException {
@@ -79,9 +85,8 @@ public class PasswordRecta {
     }
     
     @SuppressWarnings("unchecked")
-    public void fetchPassword(CommandLine cmd) throws IOException {
+    public void printPassword(CommandLine cmd) throws IOException {
         String coords = null;
-        
         if(cmd.hasOption("t")) {
             String tag = cmd.getOptionValue("t");
             if(tag == null || tag.length() == 0) {
@@ -110,7 +115,12 @@ public class PasswordRecta {
             printHelpAndExit(options,
                 "Please provide a row:column (ex. C:F)");
         }
-
+        
+        String password = fetchPassword(coords, cmd);
+        System.out.println(password);
+    }
+    
+    private String fetchPassword(String coords, CommandLine cmd) throws IOException {
         String[] parts = coords.split(":");
         if (parts == null || parts.length != 2) {
             printHelpAndExit(options,
@@ -188,7 +198,7 @@ public class PasswordRecta {
         }
 
         String password = tabulaRecta.getPassword(rowIndex, colIndex, sequence, skipStart, skipInterval, directionPriority);
-        System.out.println(password);     
+        return password;   
     }
     
     public void generate(CommandLine cmd) throws IOException {
@@ -389,6 +399,11 @@ public class PasswordRecta {
                              .withDescription("Skip interval. Skip every X symbol when generating password")
                              .hasArg()
                              .create("x")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("export")
+                             .withDescription("Export password for all tags defined in user config file")
+                             .create("e")
             );
     }
 
