@@ -68,20 +68,24 @@ public class TabulaRecta {
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence) {
-        return this.getPassword(startRow, startCol, sequence, false, null);
+        return this.getPassword(startRow, startCol, sequence, false, 0, null);
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence,
             Direction[] directionPriority) {
-        return this.getPassword(startRow, startCol, sequence, false,
+        return this.getPassword(startRow, startCol, sequence, false, 0,
                 directionPriority);
     }
 
     public String getPassword(int startRow, int startCol, Sequence sequence,
-            boolean skipStart, Direction[] directionPriority) {
+            boolean skipStart, int skipInterval, Direction[] directionPriority) {
         String pass = "";
+
+        skipInterval++;
         
-        if(!skipStart) {
+        int reads = skipInterval;
+
+        if (!skipStart) {
             pass += this.get(startRow, startCol);
         }
 
@@ -99,7 +103,7 @@ public class TabulaRecta {
                 len = Math.abs(len);
             }
 
-            for (int x = 0; x < len; x++) {
+            for (int x = 0; x < (len*skipInterval); x++) {
                 pos.move(dir);
 
                 if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)
@@ -120,9 +124,13 @@ public class TabulaRecta {
                 if (pos.isOutOfBounds(this.rows() - 1, this.cols() - 1)) {
                     pos.setWithinBounds(this.rows() - 1, this.cols() - 1);
                 }
+                
+                reads--;
 
-                if (!skip)
+                if (!skip && reads == 0) {
                     pass += this.get(pos.getRow(), pos.getCol());
+                }
+                if(reads == 0) reads = skipInterval;
             }
         }
 

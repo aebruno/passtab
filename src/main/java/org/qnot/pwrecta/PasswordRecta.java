@@ -160,8 +160,22 @@ public class PasswordRecta {
         }
         
         boolean skipStart = false;
-        if(cmd.hasOption("x")) {
+        if(cmd.hasOption("k")) {
             skipStart = true;
+        }
+        
+        int skipInterval = 0;
+        if(cmd.hasOption("x")) {
+            String skipStr = cmd.getOptionValue("x");
+            try {
+                skipInterval = Integer.valueOf(skipStr);
+            } catch(NumberFormatException e) {
+                printHelpAndExit(options, "Please provide a positive integer for the skip value");
+            }
+            
+            if(skipInterval < 0) {
+                printHelpAndExit(options, "Please provide a positive integer for the skip value");
+            }
         }
 
         TabulaRecta tabulaRecta = getDatabase(cmd);
@@ -173,7 +187,7 @@ public class PasswordRecta {
                             "Symbol not found. Please provide a valid row:column (ex. C:F)");
         }
 
-        String password = tabulaRecta.getPassword(rowIndex, colIndex, sequence, skipStart, directionPriority);
+        String password = tabulaRecta.getPassword(rowIndex, colIndex, sequence, skipStart, skipInterval, directionPriority);
         System.out.println(password);     
     }
     
@@ -368,6 +382,12 @@ public class PasswordRecta {
         options.addOption(
                 OptionBuilder.withLongOpt("skipstart")
                              .withDescription("Don't include the starting cell in the password")
+                             .create("k")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("skip")
+                             .withDescription("Skip interval. Skip every X symbol when generating password")
+                             .hasArg()
                              .create("x")
             );
     }
