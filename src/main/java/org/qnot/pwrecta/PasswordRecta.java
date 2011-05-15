@@ -216,9 +216,9 @@ public class PasswordRecta {
         }
         
         boolean skipStart = false;
-        if(cmd.hasOption("k")) {
+        if(cmd.hasOption("k") || properties.getBoolean("skipstart", false)) {
             skipStart = true;
-        }
+        } 
         
         int skipInterval = 0;
         if(cmd.hasOption("x")) {
