@@ -305,7 +305,11 @@ public class PasswordRecta {
         if ("json".equals(format)) {
             outputFormat = new JSONOutput();
         } else if ("pdf".equals(format)) {
-            outputFormat = new PDFOutput();
+            if(cmd.hasOption("w")) {
+                outputFormat = new PDFOutput(false);
+            } else {
+                outputFormat = new PDFOutput();
+            }
         } else {
             outputFormat = new AsciiOutput();
         }
@@ -358,7 +362,7 @@ public class PasswordRecta {
     }
   
     @SuppressWarnings("static-access")
-    public void buildOptions() {
+    private void buildOptions() {
         options = new Options();
         options.addOption(
             OptionBuilder.withLongOpt("output")
@@ -455,6 +459,11 @@ public class PasswordRecta {
                 OptionBuilder.withLongOpt("verbose")
                              .withDescription("print out all fields from config file when fetching a password")
                              .create("v")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("nocolor")
+                             .withDescription("Print Password Recta with no color")
+                             .create("w")
             );
     }
 

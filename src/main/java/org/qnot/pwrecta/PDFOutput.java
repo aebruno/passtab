@@ -23,7 +23,17 @@ public class PDFOutput implements OutputFormat {
 
     private static PDFont DEFAULT_FONT = PDType1Font.COURIER;
     private static PDFont BOLD_FONT = PDType1Font.COURIER_BOLD;
-
+    
+    private boolean withColor;
+    
+    public PDFOutput() { 
+        this.withColor = true;
+    }
+    
+    public PDFOutput(boolean withColor) {
+        this.withColor = withColor;
+    }
+    
     public void output(OutputStream out, TabulaRecta tabulaRecta) throws IOException {
         PDDocument document = new PDDocument();
         PDPage page = new PDPage();
@@ -43,12 +53,12 @@ public class PDFOutput implements OutputFormat {
         
         for(int i = 0; i < array.length; i++) {
             for(int j = 0; j < array[0].length; j++) {
-                if((i % 2) != 0) {
+                if(this.withColor && (i % 2) != 0) {
                     contentStream.setNonStrokingColor(PDFOutput.BOX_COLOR);
                     contentStream.fillRect(x-2, y-4, PDFOutput.BOX_WIDTH, PDFOutput.BOX_WIDTH);
                     contentStream.setNonStrokingColor(PDFOutput.FONT_COLOR);
                 }
-                if((j % 2) != 0) {
+                if(this.withColor && (j % 2) != 0) {
                     contentStream.setFont(PDFOutput.BOLD_FONT, 12);
                 } else {
                     contentStream.setFont(PDFOutput.DEFAULT_FONT, 12);
