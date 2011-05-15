@@ -220,7 +220,7 @@ public class PasswordRecta {
             skipStart = true;
         } 
         
-        int skipInterval = 0;
+        int skipInterval = properties.getInt("skip.interval", 0);
         if(cmd.hasOption("x")) {
             String skipStr = cmd.getOptionValue("x");
             try {
@@ -228,10 +228,10 @@ public class PasswordRecta {
             } catch(NumberFormatException e) {
                 printHelpAndExit(options, "Please provide a positive integer for the skip value");
             }
-            
-            if(skipInterval < 0) {
-                printHelpAndExit(options, "Please provide a positive integer for the skip value");
-            }
+        }
+        
+        if(skipInterval < 0) {
+            printHelpAndExit(options, "Please provide a positive integer for the skip value");
         }
 
         TabulaRecta tabulaRecta = getDatabase(cmd);
