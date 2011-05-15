@@ -251,23 +251,38 @@ public class PasswordRecta {
         Alphabet headerAlphabet = Alphabet.ALPHA_UPPER_NUM;
         Alphabet dataAlphabet = Alphabet.ALPHA_NUM_SYMBOL;
         
+        String[] dataAlphaPropArray = properties.getStringArray("alphabet");
         if(cmd.hasOption("a")) {
             try {
                 dataAlphabet = Alphabet.fromString(cmd.getOptionValue("a"));
             } catch(AlphabetParseException e) {
                 printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
             }
-        }
-        
-        if(cmd.hasOption("b")) {
+        } else if(dataAlphaPropArray != null && dataAlphaPropArray.length > 0) {
             try {
-                headerAlphabet = Alphabet.fromString(cmd.getOptionValue("b"));
-                if(headerAlphabet.size() > 36) {
-                    printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
-                }
+                dataAlphabet = Alphabet.fromStringArray(dataAlphaPropArray);
             } catch(AlphabetParseException e) {
                 printHelpAndExit(options, "Alphabet parsing error: "+e.getMessage());
             }
+        }
+        
+        String[] headerAlphaPropArray = properties.getStringArray("alphabet.header");
+        if(cmd.hasOption("b")) {
+            try {
+                headerAlphabet = Alphabet.fromString(cmd.getOptionValue("b"));
+            } catch(AlphabetParseException e) {
+                printHelpAndExit(options, "Header Alphabet parsing error: "+e.getMessage());
+            }
+        } else if(headerAlphaPropArray != null && headerAlphaPropArray.length > 0) {
+            try {
+                headerAlphabet = Alphabet.fromStringArray(headerAlphaPropArray);
+            } catch(AlphabetParseException e) {
+                printHelpAndExit(options, "Header Alphabet parsing error: "+e.getMessage());
+            }
+        }
+        
+        if(headerAlphabet.size() > 36) {
+            printHelpAndExit(options, "Header alphabets with more than 36 symbols are not supported yet :)");
         }
         
         TabulaRecta tabulaRecta = new TabulaRecta(headerAlphabet, dataAlphabet);

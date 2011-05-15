@@ -31,7 +31,7 @@ public class Alphabet {
     
     private String[] alphabet;
     
-    public Alphabet(String[] alphabet) {
+    private Alphabet(String[] alphabet) {
         this.alphabet = alphabet;
     }
     
@@ -65,13 +65,30 @@ public class Alphabet {
         
         List<String> list = new ArrayList<String>();
         for(String s : symbols) {
-            if(s.length() != 1) {
-                throw new AlphabetParseException("Alphabet symbols must be 1 character in length");
-            }
-            list.add(s);
+            list.add(s.trim());
+        }
+
+        String[] strArray = list.toArray(new String[list.size()]);
+        Alphabet.check(strArray);
+        
+        return new Alphabet(strArray);
+    }
+    
+    public static Alphabet fromStringArray(String[] strArray) throws AlphabetParseException {
+        Alphabet.check(strArray);
+        return new Alphabet(strArray);
+    }
+    
+    private static void check(String[] strArray) throws AlphabetParseException {
+        if(strArray.length <= 1) {
+            throw new AlphabetParseException("Alphabets must have more than 1 symbol");
         }
         
-        return new Alphabet(list.toArray(new String[list.size()]));
+        for(int i = 0; i < strArray.length; i++) {
+            if(strArray[i].length() != 1) {
+                throw new AlphabetParseException("Alphabet symbols must be 1 character in length");
+            }
+        }
     }
 
 
