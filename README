@@ -1,0 +1,148 @@
+===============================================================================
+pwrecta - open source password manager
+===============================================================================
+
+ABOUT
+
+pwrecta is an open source password manager which stores passwords using a Tabula
+Recta [1]. pwrecta builds on the idea of "writing down your passwords" [2,3] and
+attempts to provide a simple interface for password management. 
+
+One of the main features of pwrecta is the ability to generate a special Tabula
+Recta[1] consisting of random characters (generated using a cryptographically
+secure random number generator). One can then create passwords by selecting a
+row and column from the Tabula Recta. Here's a simple example, suppose we have
+the following Tabula Recta:
+
+    | A B C D E F G H I J K L M N 
+  --|----------------------------
+  A | _ u } I ` } R ) a < L : a A 
+  B | - o ( : p # O % . _ ; ' j L 
+  C | w c ( c y 2 h y ~ N O * > w 
+  D | o : R m L % V , d H r Y B j 
+  E | 9 , < 0 J p a o ) O w 0 w # 
+  F | C j i } i z 2 $ O R 5 @ T I 
+  G | Q - E m 8 N c / + u W Y V > 
+  H | , y } U Y i j i q w q c - 4 
+  I | K j W H e ; I ? E 7 H v 2 + 
+  J | g * 7 4 E } a h Y z < " : w 
+  K | . _ } I / J k 1 a D ^ ; p K 
+  L | ` < A L c z } } I P ? 4 y T 
+  M | F D < 8 < 0 R B t 9 X o B 2 
+  N | I r O E m o a + Y W w ; : 7
+
+And suppose we want to get our password for logging into webmail at acme.com. We
+decide to use the first and last letter of the domain name as the start
+row/column of the password and we want a password 8 characters in length. So we
+start at the intersection of 'A' and 'E' and read off 8 characters diagonally
+resulting in the password: '#h,)RWc
+
+Defining a scheme for selecting the starting row/column of a given password is
+completely up to the user and can be as simple or complex as one desires. The
+direction for reading the password is also up to the user to define (left,
+right, diagonally, etc.). 
+
+pwrecta provides the ability to generate these Tabula Recta's in PDF format for
+printing (and storing in your wallet for example) along with other advanced
+features for storing and retrieving passwords. 
+
+EXAMPLE USAGE
+
+- List all options:
+
+    $ pwrecta --help
+
+- Generate a Tabula Recta using the default header and alphabet
+
+    $ pwrecta
+
+- Generate a Tabula Recta in PDF format 
+
+    $ pwrecta -f pdf -o password-recta.pdf
+
+- Generate a Password Recta using a custom header and default alphabet
+
+    $ pwrecta -b A,B,C,D,E,F,G,H,I,J,K,L,M,
+
+- Generate a Password Recta using the custom header and alphabet
+
+    $ pwrecta -b A,B,C,D,E,F,G,H,I,J,K,L,M, -a 'a,b,c,d,e,f,g,1,2,3,4,5,!,@,#,$'
+
+PASSWORD MANAGEMENT
+
+pwrecta can optionally store the Tabula Recta in addition to generating the PDF
+file. This allows one to have both a hard copy and electronic version of the
+Tabula Recta. pwrecta stores the resulting Tabula Recta in JSON format. Here's
+some example uses for working with the stored Tabula Recta:
+
+- Generate a Tabula Recta in PDF and JSON
+
+    $ pwrecta --dbsave
+
+    this generates 2 files: pwrecta.pdf and ~/.pwrecta
+
+- Fetch the password starting at row 'A' and column 'E'
+
+    $ pwrecta -g A:E
+
+    by default pwrecta creates passwords 14 characters in length diagonally
+
+- Fetch the password 4 characters in length moving left (WEST) starting at A:E 
+
+    $ pwrecta -g A:E -s 4:W
+
+- Fetch the password 4 characters in length moving diagonally (SW) starting at A:E
+  skipping every 3 character
+
+    $ pwrecta -g A:E -s 4:SW -x 3
+
+CONFIGURATION FILE
+
+pwrecta will read ~/.pwrecta_rc
+
+Here's an example:
+
+#==============================================================================
+# pwrecta_rc 
+#==============================================================================
+sequence=12:SW
+pwrecta.path=/home/.passwd.json
+
+#==============================================================================
+# My WebMail
+#==============================================================================
+tag.webmail.coords=A:E
+tag.webmail.login=username
+tag.webmail.website=https://www.acme.com/
+
+TAGS
+
+You can define tags in pwrecta for quick access to passwords. Using the
+pwrecta_rc file above we can now do:
+
+- Fetch the password for the "webmail" tag defined in our pwrecta_rc
+
+    $ pwrecta -t webmail
+
+- Fetch the password for "webmail" and copy to clipboard
+
+    $ pwrecta -t webmail | xargs -n1 --replace echo -n {} | xclip
+
+- Print all information for "webmail"
+
+    $ pwrecta -t webmail -v
+
+- Export all tags (passwords, usernames, and urls)
+
+    $ pwrecta -e -v
+
+AUTHOR
+
+pwrecta was written by Andrew E. Bruno <aeb@qnot.org>
+
+
+REFERENCES
+
+[1] http://en.wikipedia.org/wiki/Tabula_recta
+[2] http://blog.jgc.org/2010/12/write-your-passwords-down.html
+[3] http://www.schneier.com/blog/archives/2005/06/write_down_your.html
