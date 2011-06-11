@@ -40,26 +40,26 @@ public class Position {
             row++;
             break;
         case E:
-            col--;
+            col++;
             break;
         case W:
-            col++;
+            col--;
             break;
         case NE:
             row--;
-            col--;
+            col++;
             break;
         case NW:
             row--;
-            col++;
+            col--;
             break;
         case SE:
             row++;
-            col--;
+            col++;
             break;
         case SW:
             row++;
-            col++;
+            col--;
             break;
         }
     }
@@ -72,10 +72,14 @@ public class Position {
     public void setWithinBounds(int maxRow, int maxCol) {
         if (row > maxRow) {
             row = maxRow;
+        } else if (row < 0) {
+            row = 0;
         }
         
         if (col > maxCol) {
             col = maxCol;
+        } else if(col < 0) {
+            col = 0;
         }
     }
     
