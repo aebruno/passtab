@@ -127,7 +127,7 @@ pwrecta_rc file above we can now do:
 
 - Fetch the password for "webmail" and copy to clipboard
 
-    $ pwrecta -t webmail | xargs -n1 --replace echo -n {} | xclip
+    $ pwrecta -t webmail --chomp | xclip
 
 - Print all information for "webmail"
 

@@ -178,7 +178,11 @@ public class PasswordRecta {
         if(cmd.hasOption("v") && tag != null) {
             System.out.println(tag+"\t"+coords+"\t"+password+"\t"+login+"\t"+website);
         } else {
-            System.out.println(password);
+            if(cmd.hasOption("m")) {
+                System.out.print(password);
+            } else {
+                System.out.println(password);
+            }
         }
     }
     
@@ -495,6 +499,11 @@ public class PasswordRecta {
                 OptionBuilder.withLongOpt("nocolor")
                              .withDescription("Print Password Recta with no color")
                              .create("w")
+            );
+        options.addOption(
+                OptionBuilder.withLongOpt("chomp")
+                             .withDescription("Don't print newline when fetching password")
+                             .create("m")
             );
     }
 
