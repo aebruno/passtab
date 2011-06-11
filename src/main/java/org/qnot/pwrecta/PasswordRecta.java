@@ -162,7 +162,7 @@ public class PasswordRecta {
             }
             
             if(coords == null) {
-                printHelpAndExit(options, "Tag not found in configuration file: "+tag);
+                die("Tag not found in configuration file: "+tag);
             }
         } else {
             coords = cmd.getOptionValue("g");
@@ -259,8 +259,7 @@ public class PasswordRecta {
         int rowIndex = tabulaRecta.getHeader().getIndex(row);
         int colIndex = tabulaRecta.getHeader().getIndex(col);
         if (rowIndex == -1 || colIndex == -1) {
-            printHelpAndExit(options,
-                            "Symbol not found. Please provide a valid row:column (ex. C:F)");
+            die("Invalid row/column.");
         }
 
         String password = tabulaRecta.getPassword(rowIndex, colIndex, sequence, skipStart, skipInterval, directionPriority);
@@ -505,6 +504,12 @@ public class PasswordRecta {
                              .withDescription("Don't print newline when fetching password")
                              .create("m")
             );
+    }
+
+    public void die(String message) {
+        if (message != null) logger.fatal("Fatal error: " + message);
+
+        System.exit(1);
     }
 
     public void printHelpAndExit(Options options, String message) {
