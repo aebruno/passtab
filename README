@@ -85,16 +85,17 @@ some example uses for working with the stored Tabula Recta:
 
     $ pwrecta -g A:E
 
-    by default pwrecta creates passwords 14 characters in length diagonally
+    by default pwrecta creates passwords 14 characters in length
+    moving diagonally (SE) from the start position
 
 - Fetch the password 4 characters in length moving left (WEST) starting at A:E 
 
     $ pwrecta -g A:E -s 4:W
 
-- Fetch the password 4 characters in length moving diagonally (SW) starting at A:E
+- Fetch the password 4 characters in length moving diagonally (SE) starting at A:E
   skipping every 3 character
 
-    $ pwrecta -g A:E -s 4:SW -x 3
+    $ pwrecta -g A:E -s 4:SE -x 3
 
 CONFIGURATION FILE
 
@@ -105,7 +106,7 @@ Here's an example:
 #==============================================================================
 # pwrecta_rc 
 #==============================================================================
-sequence=12:SW
+sequence=12:SE
 pwrecta.path=/home/.passwd.json
 
 #==============================================================================
