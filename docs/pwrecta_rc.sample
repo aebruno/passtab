@@ -1,0 +1,77 @@
+#==============================================================================
+# Sample pwrecta_rc 
+#==============================================================================
+
+#==============================================================================
+# OPTIONS FOR TABULA RECTA GENERATION
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# alphabet=[1,2,3,#,@,!,%,a,b,c,d,A,B,C,D,E,..]
+#
+# Define a custom alphabet to use when creating the Tabula Recta. pwrecta will
+# randomly choose characters from this alphabet.
+#------------------------------------------------------------------------------
+#alphabet=a,b,c,d,e,!,@,#,$,%,0,1,2,3,4,5,A,B,C,D,E,F,G
+
+#------------------------------------------------------------------------------
+# alphabet.header=[A,B,C,D,E,..]
+#
+# This option defines a custom header for the row/column of the Tabula Recta
+#------------------------------------------------------------------------------
+#alphabet.header=0,1,2,3,4,5,A,B,C,D,E,F,G
+
+
+#==============================================================================
+# OPTIONS FOR PASSWORD RETREIVAL
+#==============================================================================
+
+#------------------------------------------------------------------------------
+# pwrecta.path=[path to pwrect JSON file]
+#
+# This sets the path to the Tabual Recta JSON file
+#------------------------------------------------------------------------------
+#pwrecta.path=/home/user/passwords/passwd.json
+
+#------------------------------------------------------------------------------
+# sequence=[LENGTH]:[DIRECTION]
+#
+# Define the password length and direction. For example, here we define
+# password length of 12 and direction of SW (diagonally)
+# Valid directions are: N, S, E, W, NE, NW, SE, SW
+#------------------------------------------------------------------------------
+#sequence=12:SW
+
+#------------------------------------------------------------------------------
+# skipstart=[true|false]
+# 
+# This flag controls whether or not the starting location is included in the
+# password. For example, if we define a starting location of A:E we may not want
+# to include that character located at A:E in the resulting password. 
+#------------------------------------------------------------------------------
+#skipstart=true
+
+#------------------------------------------------------------------------------
+# skip.interval=[int]
+# 
+# This option defines how many characters to skip when creating a password. For
+# example, we may want to skip every 3rd character when creating our password.
+# If we start at A:E and move diagonally (SE) we would read every 3rd character.
+#------------------------------------------------------------------------------
+#skip.interval=3
+
+#------------------------------------------------------------------------------
+# TAGS
+#
+# Configure tags for easy fetching of passwords. A tag is simply a way to define
+# the starting coordinates for a password using an easy to remember label.  You
+# can optionally define meta data associated with a tag (ex. username and
+# website url). 
+#
+# For example, here we define a tag called "webmail" which has the starting
+# location of A:E. We can then run pwrecta to fetch the password:
+#    $ pwrecta --tag webmail
+#------------------------------------------------------------------------------
+#tag.webmail.coords=A:E
+#tag.webmail.login=username
+#tag.webmail.website=https://www.acme.com/
