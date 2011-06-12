@@ -2,14 +2,21 @@
 passtab - a light-weight system for managing passwords
 ===============================================================================
 
+"We're all good at securing small pieces of paper. I recommend that people write
+their passwords down on a small piece of paper, and keep it with their other
+valuable small pieces of paper: in their wallet." [1] -- Bruce Schneier
+
+passtab is a tool to help store passwords in your wallet.
+
 ABOUT
 
 passtab is a light-weight system for managing passwords using a Tabula Recta
-[1]. passtab builds on the idea of "writing down your passwords" [2,3] and
-attempts to provide a simple interface for password management. 
+[3]. passtab builds on the idea of "writing down your passwords" [1,2] and
+attempts to provide a simple interface for password management. The idea for
+this project was inspired by a blog post written by John Graham-Cumming [2].
 
 One of the main features of passtab is the ability to generate a special Tabula
-Recta [1] consisting of random characters (generated using a cryptographically
+Recta [3] consisting of random characters (generated using a cryptographically
 secure random number generator). One can then create passwords by selecting a
 row and column from the Tabula Recta. Here's a simple example, suppose we have
 the following Tabula Recta:
@@ -40,10 +47,11 @@ resulting in the password: '#h,)RWc
 Defining a scheme for selecting the starting row/column for a given password is
 completely up to the user and can be as simple or as complex as one desires.
 The direction for reading the password is also up to the user to define (left,
-right, diagonally, etc.). 
+right, diagonally, etc.). See John Graham-Cumming's excellent blog post [2] for
+more examples.
 
-passtab provides the ability to generate these Tabula Recta's in PDF format for
-printing (and storing in your wallet for example) along with other advanced
+passtab provides the ability to generate these Password Tabula Recta's in PDF
+format for printing (and storing in your wallet) along with other advanced
 features for storing and retrieving passwords. 
 
 EXAMPLE USAGE
@@ -145,6 +153,6 @@ passtab was written by Andrew E. Bruno <aeb@qnot.org>
 
 REFERENCES
 
-[1] http://en.wikipedia.org/wiki/Tabula_recta
+[1] http://www.schneier.com/blog/archives/2005/06/write_down_your.html
 [2] http://blog.jgc.org/2010/12/write-your-passwords-down.html
-[3] http://www.schneier.com/blog/archives/2005/06/write_down_your.html
+[3] http://en.wikipedia.org/wiki/Tabula_recta
