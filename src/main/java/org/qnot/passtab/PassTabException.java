@@ -16,22 +16,22 @@
 
 package org.qnot.passtab;
 
-public class PasswordRectaException extends Exception {
+public class PassTabException extends Exception {
 
     private static final long serialVersionUID = 2451696483282692692L;
 
-    public PasswordRectaException() {
+    public PassTabException() {
     }
 
-    public PasswordRectaException(String message) {
+    public PassTabException(String message) {
         super(message);
     }
 
-    public PasswordRectaException(Throwable cause) {
+    public PassTabException(Throwable cause) {
         super(cause);
     }
 
-    public PasswordRectaException(String message, Throwable cause) {
+    public PassTabException(String message, Throwable cause) {
         super(message, cause);
     }
 

@@ -41,12 +41,12 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
-public class PasswordRecta {
-    private static Log logger = LogFactory.getLog(PasswordRecta.class);
+public class PassTab {
+    private static Log logger = LogFactory.getLog(PassTab.class);
     private Options options;
     protected PropertiesConfiguration properties;
     
-    public PasswordRecta() {
+    public PassTab() {
         properties = new PropertiesConfiguration();
         try {
             properties.load(".passtab");
@@ -55,10 +55,10 @@ public class PasswordRecta {
     }
     
     public static void main(String[] args) {
-        PasswordRecta pwrecta = new PasswordRecta();
+        PassTab passtab = new PassTab();
         
         try {
-            pwrecta.run(args);
+            passtab.run(args);
         } catch(Exception e) {
             logger.fatal("Something really bad happened: "+e.getMessage());
             e.printStackTrace();
