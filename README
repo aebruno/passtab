@@ -1,15 +1,15 @@
 ===============================================================================
-passtab - open source password manager
+passtab - a light-weight system for managing passwords
 ===============================================================================
 
 ABOUT
 
-passtab is an open source password manager which stores passwords using a Tabula
-Recta [1]. passtab builds on the idea of "writing down your passwords" [2,3] and
+passtab is a light-weight system for managing passwords using a Tabula Recta
+[1]. passtab builds on the idea of "writing down your passwords" [2,3] and
 attempts to provide a simple interface for password management. 
 
 One of the main features of passtab is the ability to generate a special Tabula
-Recta[1] consisting of random characters (generated using a cryptographically
+Recta [1] consisting of random characters (generated using a cryptographically
 secure random number generator). One can then create passwords by selecting a
 row and column from the Tabula Recta. Here's a simple example, suppose we have
 the following Tabula Recta:
@@ -37,9 +37,9 @@ row/column of the password and we want a password 8 characters in length. So we
 start at the intersection of 'A' and 'E' and read off 8 characters diagonally
 resulting in the password: '#h,)RWc
 
-Defining a scheme for selecting the starting row/column of a given password is
-completely up to the user and can be as simple or complex as one desires. The
-direction for reading the password is also up to the user to define (left,
+Defining a scheme for selecting the starting row/column for a given password is
+completely up to the user and can be as simple or as complex as one desires.
+The direction for reading the password is also up to the user to define (left,
 right, diagonally, etc.). 
 
 passtab provides the ability to generate these Tabula Recta's in PDF format for
@@ -64,7 +64,7 @@ EXAMPLE USAGE
 
     $ passtab -b A,B,C,D,E,F,G,H,I,J,K,L,M,
 
-- Generate a Tabula Recta using the custom header and alphabet
+- Generate a Tabula Recta using a custom header and alphabet
 
     $ passtab -b A,B,C,D,E,F,G,H,I,J,K,L,M, -a 'a,b,c,d,e,f,g,1,2,3,4,5,!,@,#,$'
 
@@ -72,14 +72,14 @@ PASSWORD MANAGEMENT
 
 passtab can optionally store the Tabula Recta in addition to generating the PDF
 file. This allows one to have both a hard copy and electronic version of the
-Tabula Recta. passtab stores the resulting Tabula Recta in JSON format. Here's
-some example uses for working with the stored Tabula Recta:
+Tabula Recta. passtab stores the Tabula Recta files in JSON format. Here's some
+example uses for working with the stored Tabula Recta:
 
 - Generate a Tabula Recta in PDF and JSON
 
     $ passtab --dbsave
 
-    this generates 2 files: passtab.pdf and ~/.passtab
+    this generates 2 files: passtab.pdf and ~/.passtab_db
 
 - Fetch the password starting at row 'A' and column 'E'
 
@@ -99,7 +99,8 @@ some example uses for working with the stored Tabula Recta:
 
 CONFIGURATION FILE
 
-passtab will read ~/.passtab
+passtab will read ~/.passtab when starting up. See the sample file in the docs/
+directory (docs/passtab-config.sample) for a more complete example.
 
 Here's an example:
 
@@ -129,7 +130,7 @@ passtab config file above we can now do:
 
     $ passtab -t webmail --chomp | xclip
 
-- Print all information for "webmail"
+- Print all meta-data (user, website, etc.) for "webmail"
 
     $ passtab -t webmail -v
 
