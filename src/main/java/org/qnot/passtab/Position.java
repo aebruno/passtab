@@ -16,6 +16,11 @@
 
 package org.qnot.passtab;
 
+/**
+ * Class which encapsulates a Position on the Tabula Recta
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class Position {
     private int prevRow;
     private int prevCol;

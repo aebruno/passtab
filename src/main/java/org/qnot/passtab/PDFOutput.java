@@ -26,6 +26,11 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+/**
+ * Output Tabula Recta in PDF format
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class PDFOutput implements OutputFormat {
     private static int X_START = 140;
     private static int Y_START = 570;

@@ -41,6 +41,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.google.gson.Gson;
 
+/**
+ * Main class for the PassTab application
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class PassTab {
     private static Log logger = LogFactory.getLog(PassTab.class);
     private Options options;

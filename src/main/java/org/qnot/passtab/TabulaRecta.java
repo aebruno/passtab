@@ -23,6 +23,11 @@ import org.apache.commons.math.random.RandomDataImpl;
 
 import com.google.gson.Gson;
 
+/**
+ * Tabula Recta class
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class TabulaRecta {
 
     private String[][] tabulaRecta;

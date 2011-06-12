@@ -16,6 +16,11 @@
 
 package org.qnot.passtab;
 
+/**
+ * A SequenceItem consists of a length (in characters) and a Direction to move.
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class SequenceItem {
     private Direction direction;
     private int length;

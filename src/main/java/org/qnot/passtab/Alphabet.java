@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * Alphabet class. Provides a default set of alphabets to use for generating
  * the Tabula Recta. 
- * @author aeb
- *
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
  */
 public class Alphabet {
      

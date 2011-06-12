@@ -16,6 +16,12 @@
 
 package org.qnot.passtab;
 
+/**
+ * Enum for defining valid directions to move around the Tabula Recta when
+ * creating passwords
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public enum Direction {
     N, S, E, W, NE, NW, SE, SW;
     

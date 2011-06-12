@@ -19,6 +19,11 @@ package org.qnot.passtab;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Sequence used for generating a password. A Sequence is list of SequenceItem's
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class Sequence {
     public static String DEFAULT_SEQUENCE = "12:SW";
     

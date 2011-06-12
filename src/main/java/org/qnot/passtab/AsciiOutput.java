@@ -21,6 +21,11 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Output Tabula Recta in ASCII format
+ * 
+ * @author Andrew E. Bruno <aeb@qnot.org>
+ */
 public class AsciiOutput implements OutputFormat {
 
     public void output(OutputStream out, TabulaRecta tabulaRecta) throws IOException {
