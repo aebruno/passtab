@@ -25,7 +25,7 @@ import java.util.List;
  * @author Andrew E. Bruno <aeb@qnot.org>
  */
 public class Sequence {
-    public static String DEFAULT_SEQUENCE = "12:SW";
+    public static String DEFAULT_SEQUENCE = "12:SE";
     
     private List<SequenceItem> items;
     
