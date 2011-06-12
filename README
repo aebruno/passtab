@@ -48,7 +48,7 @@ Defining a scheme for selecting the starting row/column for a given password is
 completely up to the user and can be as simple or as complex as one desires.
 The direction for reading the password is also up to the user to define (left,
 right, diagonally, etc.). See John Graham-Cumming's excellent blog post [2] for
-more examples.
+more examples. 
 
 passtab provides the ability to generate these Password Tabula Recta's in PDF
 format for printing (and storing in your wallet) along with other advanced
