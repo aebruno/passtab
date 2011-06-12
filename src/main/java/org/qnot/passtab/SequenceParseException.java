@@ -16,7 +16,7 @@
 
 package org.qnot.passtab;
 
-public class SequenceParseException extends PasswordRectaException {
+public class SequenceParseException extends PassTabException {
 
     private static final long serialVersionUID = -8532492297318885298L;
 
