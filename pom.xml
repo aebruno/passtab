@@ -14,7 +14,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/assemble/exe.xml</descriptor>
+            <descriptor>src/assemble/uber.xml</descriptor>
           </descriptors>
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>

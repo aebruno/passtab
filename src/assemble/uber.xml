@@ -1,5 +1,5 @@
 <assembly>
-  <id>exe</id>
+  <id>uber</id>
   <formats>
     <format>jar</format>
   </formats>
