@@ -1,5 +1,6 @@
 <assembly>
-  <id>bin</id>
+  <id>${project.version}-bin</id>
+  <baseDirectory>passtab-${project.version}</baseDirectory>
   <formats>
     <format>zip</format>
     <format>tar.gz</format>

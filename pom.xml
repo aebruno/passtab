@@ -8,7 +8,7 @@
   <name>passtab</name>
   <url>https://github.com/aebruno/passtab</url>
   <build>
-    <finalName>passtab-${project.version}</finalName>
+    <finalName>passtab</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
