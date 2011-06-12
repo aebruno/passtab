@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.qnot.pwrecta;
+package org.qnot.passtab;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;

@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.qnot.pwrecta;
+package org.qnot.passtab;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,7 +49,7 @@ public class PasswordRecta {
     public PasswordRecta() {
         properties = new PropertiesConfiguration();
         try {
-            properties.load(".pwrecta_rc");
+            properties.load(".passtab");
         } catch(ConfigurationException ignored) {
         }
     }
@@ -319,8 +319,8 @@ public class PasswordRecta {
                 pdfOut = new FileOutputStream(name + ".pdf");
             } else {
                 jsonOut = new FileOutputStream(new File(System
-                        .getProperty("user.home"), ".pwrecta"));
-                pdfOut = new FileOutputStream("pwrecta.pdf");
+                        .getProperty("user.home"), ".passtab_db"));
+                pdfOut = new FileOutputStream("passtab.pdf");
             }
 
             OutputFormat jsonFormat = new JSONOutput();
@@ -355,13 +355,13 @@ public class PasswordRecta {
         File jsonFile = null;
 
         String inFile = cmd.getOptionValue("i");
-        String inFileProps = properties.getString("pwrecta.path");
+        String inFileProps = properties.getString("passtab.path");
         if (inFile != null && inFile.length() > 0) {
             jsonFile = new File(inFile);
         } else if(inFileProps != null && inFileProps.length() > 0){
             jsonFile = new File(inFileProps);
         } else {
-            jsonFile = new File(System.getProperty("user.home"), ".pwrecta");
+            jsonFile = new File(System.getProperty("user.home"), ".passtab_db");
         }
         
         if(!jsonFile.exists() || !jsonFile.canRead()) {
@@ -378,7 +378,7 @@ public class PasswordRecta {
            tabulaRecta.getDataAlphabet() == null || tabulaRecta.getDataAlphabet().size() == 0 ||
            tabulaRecta.getRawData() == null || tabulaRecta.rows() == 0 || tabulaRecta.cols() == 0
            ) {
-            printHelpAndExit(options, "Not a valid pwrecta JSON file: "+jsonFile.getAbsolutePath());
+            printHelpAndExit(options, "Not a valid passtab JSON file: "+jsonFile.getAbsolutePath());
         }
         
         return tabulaRecta;
@@ -411,7 +411,7 @@ public class PasswordRecta {
         );
         options.addOption(
             OptionBuilder.withLongOpt("dbsave")
-                         .withDescription("save pwrecta db to JSON and write out PDF file")
+                         .withDescription("save passtab db to JSON and write out PDF file")
                          .create("d")
         );
         options.addOption(
@@ -434,7 +434,7 @@ public class PasswordRecta {
         );
         options.addOption(
                 OptionBuilder.withLongOpt("print")
-                             .withDescription("print existing pwrecta database")
+                             .withDescription("print existing passtab database")
                              .create("p")
         );
         options.addOption(
@@ -516,7 +516,7 @@ public class PasswordRecta {
         if (message != null)
             logger.fatal("Usage error: " + message + "\n");
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("pwrecta", options);
+        formatter.printHelp("passtab", options);
         if (message != null) {
             System.exit(1);
         } else {

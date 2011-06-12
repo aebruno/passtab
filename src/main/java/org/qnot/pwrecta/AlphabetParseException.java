@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.qnot.pwrecta;
+package org.qnot.passtab;
 
 public class AlphabetParseException extends PasswordRectaException {
     private static final long serialVersionUID = 1146546954615040647L;

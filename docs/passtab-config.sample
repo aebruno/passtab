@@ -1,5 +1,5 @@
 #==============================================================================
-# Sample pwrecta_rc 
+# Sample passtab config 
 #==============================================================================
 
 #==============================================================================
@@ -9,7 +9,7 @@
 #------------------------------------------------------------------------------
 # alphabet=[1,2,3,#,@,!,%,a,b,c,d,A,B,C,D,E,..]
 #
-# Define a custom alphabet to use when creating the Tabula Recta. pwrecta will
+# Define a custom alphabet to use when creating the Tabula Recta. passtab will
 # randomly choose characters from this alphabet.
 #------------------------------------------------------------------------------
 #alphabet=a,b,c,d,e,!,@,#,$,%,0,1,2,3,4,5,A,B,C,D,E,F,G
@@ -27,11 +27,11 @@
 #==============================================================================
 
 #------------------------------------------------------------------------------
-# pwrecta.path=[path to pwrect JSON file]
+# passtab.path=[path to passtab JSON file]
 #
 # This sets the path to the Tabual Recta JSON file
 #------------------------------------------------------------------------------
-#pwrecta.path=/home/user/passwords/passwd.json
+#passtab.path=/home/user/passwords/passtab.json
 
 #------------------------------------------------------------------------------
 # sequence=[LENGTH]:[DIRECTION]
@@ -69,8 +69,8 @@
 # website url). 
 #
 # For example, here we define a tag called "webmail" which has the starting
-# location of A:E. We can then run pwrecta to fetch the password:
-#    $ pwrecta --tag webmail
+# location of A:E. We can then run passtab to fetch the password:
+#    $ passtab --tag webmail
 #------------------------------------------------------------------------------
 #tag.webmail.coords=A:E
 #tag.webmail.login=username

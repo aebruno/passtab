@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package org.qnot.pwrecta;
+package org.qnot.passtab;
 
 public class SequenceItem {
     private Direction direction;
