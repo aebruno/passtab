@@ -15,6 +15,7 @@
         <configuration>
           <descriptors>
             <descriptor>src/assemble/uber.xml</descriptor>
+            <descriptor>src/assemble/bin.xml</descriptor>
           </descriptors>
           <archive>
             <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
