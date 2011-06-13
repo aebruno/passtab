@@ -93,7 +93,7 @@ example uses for working with the stored Tabula Recta:
 
     $ passtab -g A:E
 
-    by default passtab creates passwords 14 characters in length
+    by default passtab creates passwords 13 characters in length
     moving diagonally (SE) from the start position
 
 - Fetch the password 4 characters in length moving left (WEST) starting at A:E 

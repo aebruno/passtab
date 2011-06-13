@@ -37,10 +37,10 @@
 # sequence=[LENGTH]:[DIRECTION]
 #
 # Define the password length and direction. For example, here we define
-# password length of 12 and direction of SW (diagonally)
+# password length of 12 and direction of SE (diagonally)
 # Valid directions are: N, S, E, W, NE, NW, SE, SW
 #------------------------------------------------------------------------------
-#sequence=12:SW
+#sequence=12:SE
 
 #------------------------------------------------------------------------------
 # skipstart=[true|false]
