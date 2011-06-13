@@ -311,7 +311,7 @@ public class PassTab {
         
         TabulaRecta tabulaRecta = new TabulaRecta(headerAlphabet, dataAlphabet);
         
-        logger.info("Generating a Password Recta...");
+        logger.info("Generating a random Tabula Recta (might take a while)...");
         tabulaRecta.generate();
 
         if (cmd.hasOption("d")) {
