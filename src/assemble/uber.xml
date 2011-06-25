@@ -12,7 +12,6 @@
       <scope>runtime</scope>
       <includes>
         <include>com.google.code.gson:gson</include>
-        <include>org.apache.pdfbox:pdfbox</include>
         <include>com.itextpdf:itextpdf</include>
         <include>org.apache.commons:commons-math</include>
         <include>commons-lang:commons-lang</include>
