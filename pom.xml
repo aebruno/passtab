@@ -4,7 +4,7 @@
   <groupId>org.qnot.passtab</groupId>
   <artifactId>passtab</artifactId>
   <packaging>jar</packaging>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <name>passtab</name>
   <url>https://github.com/aebruno/passtab</url>
   <repositories>
