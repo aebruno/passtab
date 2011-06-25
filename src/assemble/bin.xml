@@ -11,7 +11,7 @@
       <outputDirectory>/</outputDirectory>
       <includes>
         <include>README</include>
-        <include>LICENSE</include>
+        <include>COPYING</include>
         <include>NOTICE</include>
       </includes>
     </fileSet>
