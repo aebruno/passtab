@@ -7,6 +7,16 @@
   <version>0.0.1</version>
   <name>passtab</name>
   <url>https://github.com/aebruno/passtab</url>
+  <repositories>
+    <repository>
+      <id>itextpdf.com</id>
+      <name>Maven Repository for iText</name>
+      <url>http://maven.itextpdf.com/</url>
+    </repository>
+  </repositories>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <finalName>passtab</finalName>
     <plugins>
@@ -54,9 +64,9 @@
       <version>1.7.1</version>
     </dependency>
     <dependency>
-      <groupId>org.apache.pdfbox</groupId>
-      <artifactId>pdfbox</artifactId>
-      <version>1.5.0</version>
+      <groupId>com.itextpdf</groupId>
+      <artifactId>itextpdf</artifactId>
+      <version>5.1.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>

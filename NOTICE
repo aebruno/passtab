@@ -1,5 +1,13 @@
 The binary release of passtab includes software developed by The Apache Software
-Foundation (http://www.apache.org/).
+Foundation (http://www.apache.org/). Released under the Apache 2.0 license
 
-The binary release of passtab also includes the Gson library
-(https://code.google.com/p/google-gson/)
+The binary release of passtab includes the Gson library
+(https://code.google.com/p/google-gson/). Released under the Apache 2.0 license
+
+The binary release of passtab includes the iText library
+written by Bruno Lowagie, Paulo Soares, and others
+(http://itextpdf.com/). Released under the AGPL
+
+The binary and source releases of passtab include The DejaVu Sans Mono fonts.
+(http://dejavu-fonts.org). Released under the Bitstream Vera Fonts Copyright 
+which is included in docs/dejavu-fonts.copyright
