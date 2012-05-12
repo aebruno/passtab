@@ -39,6 +39,7 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -206,7 +207,8 @@ public class PassTab {
         
         String seq = cmd.getOptionValue("s");
         if (seq == null || seq.length() == 0) {
-            seq = properties.getString("sequence");
+            String[] seqItems = properties.getStringArray("sequence");
+            seq = StringUtils.join(seqItems, ",");
         }
         
         if(seq == null) {
